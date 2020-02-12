@@ -6,19 +6,10 @@
     <description>Recent content in dist-sys on ATechieThought Labs</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 25 Dec 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 24 Dec 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://lalitkale.github.io/tags/dist-sys/index.xml" rel="self" type="application/rss+xml" />
     
-    
-    <item>
-      <title>Time Dimension in Distributed Systems</title>
-      <link>http://lalitkale.github.io/post/why-we-need-distributed-systems/</link>
-      <pubDate>Wed, 25 Dec 2019 00:00:00 +0000</pubDate>
-      
-      <guid>http://lalitkale.github.io/post/why-we-need-distributed-systems/</guid>
-      <description>Time is the essense. It is the most important dimension while dealing with distributed system. However, the funny thing is there is no time in distributed systems. It&amp;rsquo;s all the clocks.</description>
-    </item>
     
     <item>
       <title>Why We Need Distributed Systems</title>

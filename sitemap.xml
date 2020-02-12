@@ -4,35 +4,28 @@
   
   <url>
     <loc>http://lalitkale.github.io/</loc>
-    <lastmod>2019-12-25T00:00:00+00:00</lastmod>
+    <lastmod>2019-12-24T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>http://lalitkale.github.io/tags/dist-sys/</loc>
-    <lastmod>2019-12-25T00:00:00+00:00</lastmod>
+    <lastmod>2019-12-24T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>http://lalitkale.github.io/post/</loc>
-    <lastmod>2019-12-25T00:00:00+00:00</lastmod>
+    <lastmod>2019-12-24T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>http://lalitkale.github.io/tags/</loc>
-    <lastmod>2019-12-25T00:00:00+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>http://lalitkale.github.io/post/why-we-need-distributed-systems/</loc>
-    <lastmod>2019-12-25T00:00:00+00:00</lastmod>
+    <lastmod>2019-12-24T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>

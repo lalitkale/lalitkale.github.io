@@ -7,8 +7,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-  <title>Time Dimension in Distributed Systems - ATechieThought Labs</title>
-  <meta name="description" content="Time is the essense. It is the most important dimension while dealing with distributed system. However, the funny thing is there is no time in distributed systems. It&rsquo;s all the clocks."><script type="application/ld+json">
+  <title>Why We Need Distributed Systems - ATechieThought Labs</title>
+  <meta name="description" content="This post explains why we need distributed systems and their commonplace"><script type="application/ld+json">
 {
     "@context": "http://schema.org",
     "@type": "WebSite",
@@ -44,7 +44,7 @@
         "position": 3,
         "item": {
           "@id": "http:\/\/lalitkale.github.io\/post\/why-we-need-distributed-systems\/",
-          "name": "Time dimension in distributed systems"
+          "name": "Why we need distributed systems"
         }
     }]
 }
@@ -55,12 +55,12 @@
   "author": {
     "name" : "Lalit Kale"
   },
-  "headline": "Time Dimension in Distributed Systems",
-  "description" : "Time is the essense. It is the most important dimension while dealing with distributed system. However, the funny thing is there is no time in distributed systems. It\x26rsquo;s all the clocks.",
+  "headline": "Why We Need Distributed Systems",
+  "description" : "This post explains why we need distributed systems and their commonplace",
   "inLanguage" : "en",
-  "wordCount":  31 ,
-  "datePublished" : "2019-12-25T00:00:00",
-  "dateModified" : "2019-12-25T00:00:00",
+  "wordCount":  344 ,
+  "datePublished" : "2019-12-24T00:00:00",
+  "dateModified" : "2019-12-24T00:00:00",
   "image" : "http:\/\/lalitkale.github.io\/images\/Lalit_Kale.jpg",
   "keywords" : [ "dist-sys" ],
   "mainEntityOfPage" : "http:\/\/lalitkale.github.io\/post\/why-we-need-distributed-systems\/",
@@ -77,15 +77,15 @@
 }
 </script>
 
-<meta property="og:title" content="Time Dimension in Distributed Systems" />
-<meta property="og:description" content="Time is the essense. It is the most important dimension while dealing with distributed system. However, the funny thing is there is no time in distributed systems. It&rsquo;s all the clocks.">
+<meta property="og:title" content="Why We Need Distributed Systems" />
+<meta property="og:description" content="This post explains why we need distributed systems and their commonplace">
 <meta property="og:image" content="http://lalitkale.github.io/images/Lalit_Kale.jpg" />
 <meta property="og:url" content="http://lalitkale.github.io/post/why-we-need-distributed-systems/" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="ATechieThought Labs" />
 
-  <meta name="twitter:title" content="Time Dimension in Distributed Systems" />
-  <meta name="twitter:description" content="Time is the essense. It is the most important dimension while dealing with distributed system. However, the funny thing is there is no time in distributed systems. It&rsquo;s all the clocks.">
+  <meta name="twitter:title" content="Why We Need Distributed Systems" />
+  <meta name="twitter:description" content="This post explains why we need distributed systems and their commonplace">
   <meta name="twitter:image" content="http://lalitkale.github.io/images/Lalit_Kale.jpg" />
   <meta name="twitter:card" content="summary" />
   <link href='http://lalitkale.github.io/img/favicon.ico' rel='icon' type='image/x-icon'/>
@@ -235,7 +235,7 @@ if (!doNotTrack) {
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
             <div class="post-heading">
               
-                <h1>Time Dimension in Distributed Systems</h1>
+                <h1>Why We Need Distributed Systems</h1>
               
               
               
@@ -243,13 +243,13 @@ if (!doNotTrack) {
                 <span class="post-meta">
   
   
-  <i class="fas fa-calendar"></i>&nbsp;Posted on December 25, 2019
+  <i class="fas fa-calendar"></i>&nbsp;Posted on December 24, 2019
   
   
-    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;1&nbsp;minutes
+    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;2&nbsp;minutes
   
   
-    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;31&nbsp;words
+    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;344&nbsp;words
   
   
   
@@ -270,8 +270,23 @@ if (!doNotTrack) {
   <div class="row">
     <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
       <article role="main" class="blog-post">
-        <p>Time is the essense. It is the most important dimension while dealing 
-with distributed system. However, the funny thing is there is no time in distributed systems. It&rsquo;s all the clocks.</p>
+        <p>It is Christmas time and as usual all of us are busy in shopping. Usually I buy stuff from internet ecommerce sites, who doesn&rsquo;t these days, right? 
+For shoppers, ecommerce site provides the experience of single destination. They type <a href="http://www.myfavshoppingsite.com">www.myfavshoppingsite.com</a> and they purchase the stuff and it&rsquo;s all usual business.</p>
+<p>However, as an engineer, we understand that it is not easy to keep those sites functioning and business as normal for the shoppers. We created an illusion for our customers that they are dealing with one single server/webaddress. But, behind the scene we are running thousandas of those kinds of machines and handling the complexity around it. But why do we do this?
+why can&rsquo;t we have a simple single machine which can just serve to the demands of customers? The simplest answer lies in one sentense - &ldquo;scalable systems needs redundancy and coordination&rdquo;.</p>
+<p>There are plenty of websites that we visit everyday,even without thinking, which are serving our daily needs. Be it your faviourtie shopping site or the website where you pay 10 bucks to watch your daily shows.</p>
+<p>To satisfy such huge demands where you have to serve millions and billions of people, one single machine can not be enough. It will be exuasted out of its resources pretty quickly. This is the reason, we need redundancy i.e. to run fleet of such machines. To operate and maintain such machines, we also need such technology and people who have those skills.</p>
+<p>This as a whole creates a fundamentally completely different ball-game as compared to a single person sitting in a dorm and running a website on his machine.</p>
+<p>Scale changes whole game and this combination of machines, people and technology ecosystem is defined by distributed system.</p>
+<p>Practically, we live in the world of distributed systems which are running on internet scale.so, it is very important to understand those.</p>
+<p>This is my journey as engineer to understand those systems and along the journey I hope to share what I know and learn a thing or two as well.</p>
+<p>Reference:</p>
+<ol>
+<li><a href="https://link.springer.com/article/10.1007/s00607-016-0508-7">https://link.springer.com/article/10.1007/s00607-016-0508-7</a></li>
+<li><a href="https://queue.acm.org/detail.cfm?id=2482856">https://queue.acm.org/detail.cfm?id=2482856</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Distributed_computing">https://en.wikipedia.org/wiki/Distributed_computing</a></li>
+<li><a href="https://www.somethingsimilar.com/2013/01/14/notes-on-distributed-systems-for-young-bloods/?imm_mid=0a2ec6&amp;cmp=em-velocity-newsletters-vlny-cfp-20130307-direct">https://www.somethingsimilar.com/2013/01/14/notes-on-distributed-systems-for-young-bloods/?imm_mid=0a2ec6&amp;cmp=em-velocity-newsletters-vlny-cfp-20130307-direct</a></li>
+</ol>
 
 
         
@@ -292,7 +307,7 @@ with distributed system. However, the funny thing is there is no time in distrib
     <ul class="share">
       
       <li>
-        <a href="//twitter.com/share?url=http%3a%2f%2flalitkale.github.io%2fpost%2fwhy-we-need-distributed-systems%2f&amp;text=Time%20Dimension%20in%20Distributed%20Systems&amp;via=" target="_blank" title="Share on Twitter">
+        <a href="//twitter.com/share?url=http%3a%2f%2flalitkale.github.io%2fpost%2fwhy-we-need-distributed-systems%2f&amp;text=Why%20We%20Need%20Distributed%20Systems&amp;via=" target="_blank" title="Share on Twitter">
           <i class="fab fa-twitter"></i>
         </a>
       </li>
@@ -306,28 +321,28 @@ with distributed system. However, the funny thing is there is no time in distrib
   
       
       <li>
-        <a href="//reddit.com/submit?url=http%3a%2f%2flalitkale.github.io%2fpost%2fwhy-we-need-distributed-systems%2f&amp;title=Time%20Dimension%20in%20Distributed%20Systems" target="_blank" title="Share on Reddit">
+        <a href="//reddit.com/submit?url=http%3a%2f%2flalitkale.github.io%2fpost%2fwhy-we-need-distributed-systems%2f&amp;title=Why%20We%20Need%20Distributed%20Systems" target="_blank" title="Share on Reddit">
           <i class="fab fa-reddit"></i>
         </a>
       </li>
   
       
       <li>
-        <a href="//www.linkedin.com/shareArticle?url=http%3a%2f%2flalitkale.github.io%2fpost%2fwhy-we-need-distributed-systems%2f&amp;title=Time%20Dimension%20in%20Distributed%20Systems" target="_blank" title="Share on LinkedIn">
+        <a href="//www.linkedin.com/shareArticle?url=http%3a%2f%2flalitkale.github.io%2fpost%2fwhy-we-need-distributed-systems%2f&amp;title=Why%20We%20Need%20Distributed%20Systems" target="_blank" title="Share on LinkedIn">
           <i class="fab fa-linkedin"></i>
         </a>
       </li>
   
       
       <li>
-        <a href="//www.stumbleupon.com/submit?url=http%3a%2f%2flalitkale.github.io%2fpost%2fwhy-we-need-distributed-systems%2f&amp;title=Time%20Dimension%20in%20Distributed%20Systems" target="_blank" title="Share on StumbleUpon">
+        <a href="//www.stumbleupon.com/submit?url=http%3a%2f%2flalitkale.github.io%2fpost%2fwhy-we-need-distributed-systems%2f&amp;title=Why%20We%20Need%20Distributed%20Systems" target="_blank" title="Share on StumbleUpon">
           <i class="fab fa-stumbleupon"></i>
         </a>
       </li>
   
       
       <li>
-        <a href="//www.pinterest.com/pin/create/button/?url=http%3a%2f%2flalitkale.github.io%2fpost%2fwhy-we-need-distributed-systems%2f&amp;description=Time%20Dimension%20in%20Distributed%20Systems" target="_blank" title="Share on Pinterest">
+        <a href="//www.pinterest.com/pin/create/button/?url=http%3a%2f%2flalitkale.github.io%2fpost%2fwhy-we-need-distributed-systems%2f&amp;description=Why%20We%20Need%20Distributed%20Systems" target="_blank" title="Share on Pinterest">
           <i class="fab fa-pinterest"></i>
         </a>
       </li>
@@ -348,10 +363,6 @@ with distributed system. However, the funny thing is there is no time in distrib
 
       
         <ul class="pager blog-pager">
-          
-            <li class="previous">
-              <a href="http://lalitkale.github.io/post/why-we-need-distributed-systems/" data-toggle="tooltip" data-placement="top" title="Why We Need Distributed Systems">&larr; Previous Post</a>
-            </li>
           
           
         </ul>
