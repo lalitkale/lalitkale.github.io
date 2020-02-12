@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>dist-sys on ATechieThought Labs</title>
-    <link>http://lalitkale.github.io/tags/dist-sys/</link>
+    <link>https://lalitkale.github.io/tags/dist-sys/</link>
     <description>Recent content in dist-sys on ATechieThought Labs</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 24 Dec 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="http://lalitkale.github.io/tags/dist-sys/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://lalitkale.github.io/tags/dist-sys/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Why We Need Distributed Systems</title>
-      <link>http://lalitkale.github.io/post/why-we-need-distributed-systems/</link>
+      <link>https://lalitkale.github.io/post/why-we-need-distributed-systems/</link>
       <pubDate>Tue, 24 Dec 2019 00:00:00 +0000</pubDate>
       
-      <guid>http://lalitkale.github.io/post/why-we-need-distributed-systems/</guid>
+      <guid>https://lalitkale.github.io/post/why-we-need-distributed-systems/</guid>
       <description>It is Christmas time and as usual all of us are busy in shopping. Usually I buy stuff from internet ecommerce sites, who doesn&amp;rsquo;t these days, right? For shoppers, ecommerce site provides the experience of single destination. They type www.myfavshoppingsite.com and they purchase the stuff and it&amp;rsquo;s all usual business.
 However, as an engineer, we understand that it is not easy to keep those sites functioning and business as normal for the shoppers.</description>
     </item>
