@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on ATechieThought Labs</title>
+    <link>http://lalitkale.github.io/post/</link>
+    <description>Recent content in Posts on ATechieThought Labs</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 25 Dec 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://lalitkale.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Time Dimension in Distributed Systems</title>
+      <link>http://lalitkale.github.io/post/why-we-need-distributed-systems/</link>
+      <pubDate>Wed, 25 Dec 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://lalitkale.github.io/post/why-we-need-distributed-systems/</guid>
+      <description>Time is the essense. It is the most important dimension while dealing with distributed system. However, the funny thing is there is no time in distributed systems. It&amp;rsquo;s all the clocks.</description>
+    </item>
+    
+    <item>
+      <title>Why We Need Distributed Systems</title>
+      <link>http://lalitkale.github.io/post/why-we-need-distributed-systems/</link>
+      <pubDate>Tue, 24 Dec 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://lalitkale.github.io/post/why-we-need-distributed-systems/</guid>
+      <description>It is Christmas time and as usual all of us are busy in shopping. Usually I buy stuff from internet ecommerce sites, who doesn&amp;rsquo;t these days, right? For shoppers, ecommerce site provides the experience of single destination. They type www.myfavshoppingsite.com and they purchase the stuff and it&amp;rsquo;s all usual business.
+However, as an engineer, we understand that it is not easy to keep those sites functioning and business as normal for the shoppers.</description>
+    </item>
+    
+  </channel>
+</rss>
