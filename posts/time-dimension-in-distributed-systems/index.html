@@ -1,0 +1,116 @@
+<!DOCTYPE html><html lang="en" data-astro-cid-dmqsi53g> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Time Dimension in Distributed Systems — ATechieThought Labs</title><meta name="description" content="Why time is the trickiest problem in distributed systems — from wall clocks and NTP drift to Lamport timestamps and vector clocks."><link rel="canonical" href="https://lalitkale.github.io/posts/time-dimension-in-distributed-systems/"><!-- Open Graph --><meta property="og:type" content="article"><meta property="og:title" content="Time Dimension in Distributed Systems — ATechieThought Labs"><meta property="og:description" content="Why time is the trickiest problem in distributed systems — from wall clocks and NTP drift to Lamport timestamps and vector clocks."><meta property="og:url" content="https://lalitkale.github.io/posts/time-dimension-in-distributed-systems/"><meta property="og:site_name" content="ATechieThought Labs"><!-- Twitter --><meta name="twitter:card" content="summary"><meta name="twitter:title" content="Time Dimension in Distributed Systems — ATechieThought Labs"><meta name="twitter:description" content="Why time is the trickiest problem in distributed systems — from wall clocks and NTP drift to Lamport timestamps and vector clocks."><!-- JSON-LD --><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Time Dimension in Distributed Systems","description":"Why time is the trickiest problem in distributed systems — from wall clocks and NTP drift to Lamport timestamps and vector clocks.","datePublished":"2019-12-25T00:00:00.000Z","url":"https://lalitkale.github.io/posts/time-dimension-in-distributed-systems","mainEntityOfPage":{"@type":"WebPage","@id":"https://lalitkale.github.io/posts/time-dimension-in-distributed-systems"},"author":{"@type":"Person","name":"Lalit Kale"},"publisher":{"@type":"Organization","name":"ATechieThought Labs","url":"https://lalitkale.github.io"}}</script><link rel="alternate" type="application/rss+xml" title="ATechieThought Labs" href="/rss.xml"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:ital,wght@0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet"><style>.nav[data-astro-cid-dmqpwcec]{display:flex;justify-content:space-between;align-items:baseline;padding:var(--space-lg) 0;border-bottom:1px solid var(--color-border);margin-bottom:var(--space-2xl)}.nav-brand[data-astro-cid-dmqpwcec]{font-family:var(--font-heading);font-size:.875rem;font-weight:600;letter-spacing:-.01em;text-decoration:none;color:var(--color-text)}.nav-brand[data-astro-cid-dmqpwcec]:hover{color:var(--color-text-secondary)}.nav-links[data-astro-cid-dmqpwcec]{display:flex;gap:var(--space-lg)}.nav-links[data-astro-cid-dmqpwcec] a[data-astro-cid-dmqpwcec]{font-family:var(--font-heading);font-size:.8125rem;color:var(--color-text-secondary);text-decoration:none}.nav-links[data-astro-cid-dmqpwcec] a[data-astro-cid-dmqpwcec]:hover,.nav-links[data-astro-cid-dmqpwcec] a[data-astro-cid-dmqpwcec].active{color:var(--color-text)}.footer[data-astro-cid-sz7xmlte]{margin-top:var(--space-2xl);padding:var(--space-lg) 0;border-top:1px solid var(--color-border)}.footer[data-astro-cid-sz7xmlte] p[data-astro-cid-sz7xmlte]{font-family:var(--font-heading);font-size:.75rem;color:var(--color-text-tertiary)}.footer[data-astro-cid-sz7xmlte] a[data-astro-cid-sz7xmlte]{color:var(--color-text-tertiary)}.footer[data-astro-cid-sz7xmlte] a[data-astro-cid-sz7xmlte]:hover{color:var(--color-text-secondary)}:root{--font-body: "Newsreader", Georgia, "Times New Roman", serif;--font-heading: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;--font-mono: "JetBrains Mono", "Fira Code", Consolas, monospace;--color-text: #1a1a1a;--color-text-secondary: #555;--color-text-tertiary: #888;--color-bg: #fafaf9;--color-surface: #fff;--color-border: #e5e5e3;--color-link: #1a1a1a;--color-link-hover: #555;--color-code-bg: #f4f4f2;--width-content: 640px;--width-page: 720px;--space-xs: .25rem;--space-sm: .5rem;--space-md: 1rem;--space-lg: 2rem;--space-xl: 3rem;--space-2xl: 5rem}*,*:before,*:after{margin:0;padding:0;box-sizing:border-box}html{font-size:18px;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility}body{font-family:var(--font-body);color:var(--color-text);background-color:var(--color-bg);line-height:1.7}a{color:var(--color-link);text-decoration-thickness:1px;text-underline-offset:2px;transition:color .15s ease}a:hover{color:var(--color-link-hover)}img{max-width:100%;height:auto;display:block}::selection{background-color:#d4d4d0}.page[data-astro-cid-dmqsi53g]{max-width:var(--width-page);margin:0 auto;padding:0 var(--space-lg);min-height:100vh;display:flex;flex-direction:column}main[data-astro-cid-dmqsi53g]{flex:1}
+.heading[data-astro-cid-u4qoyrkz]{font-family:var(--font-heading);color:var(--color-text);letter-spacing:-.02em;line-height:1.2}.heading-h1[data-astro-cid-u4qoyrkz]{font-size:2rem;font-weight:700;margin-bottom:var(--space-md)}.heading-h2[data-astro-cid-u4qoyrkz]{font-size:1.375rem;font-weight:600;margin-top:var(--space-xl);margin-bottom:var(--space-sm)}.heading-h3[data-astro-cid-u4qoyrkz]{font-size:1.125rem;font-weight:600;margin-top:var(--space-lg);margin-bottom:var(--space-sm)}
+.prose[data-astro-cid-apjhz64k]{font-family:var(--font-body);font-size:1rem;line-height:1.75;color:var(--color-text)}.prose[data-astro-cid-apjhz64k] p{margin-bottom:1.5em}.prose[data-astro-cid-apjhz64k] h2{font-family:var(--font-heading);font-size:1.375rem;font-weight:600;letter-spacing:-.02em;line-height:1.3;margin-top:2.5em;margin-bottom:.75em;color:var(--color-text)}.prose[data-astro-cid-apjhz64k] h3{font-family:var(--font-heading);font-size:1.125rem;font-weight:600;letter-spacing:-.01em;line-height:1.4;margin-top:2em;margin-bottom:.5em;color:var(--color-text)}.prose[data-astro-cid-apjhz64k] a{color:var(--color-link);text-decoration-thickness:1px;text-underline-offset:2px}.prose[data-astro-cid-apjhz64k] a:hover{color:var(--color-link-hover)}.prose[data-astro-cid-apjhz64k] blockquote{border-left:2px solid var(--color-border);padding-left:var(--space-lg);margin:1.5em 0;color:var(--color-text-secondary);font-style:italic}.prose[data-astro-cid-apjhz64k] ul,.prose[data-astro-cid-apjhz64k] ol{margin-bottom:1.5em;padding-left:1.5em}.prose[data-astro-cid-apjhz64k] li{margin-bottom:.375em}.prose[data-astro-cid-apjhz64k] code{font-family:var(--font-mono);font-size:.85em;background-color:var(--color-code-bg);padding:.125em .375em;border-radius:3px}.prose[data-astro-cid-apjhz64k] pre{background-color:var(--color-code-bg);padding:var(--space-lg);border-radius:4px;overflow-x:auto;margin:1.5em 0;line-height:1.5}.prose[data-astro-cid-apjhz64k] pre code{background:none;padding:0;font-size:.8125rem}.prose[data-astro-cid-apjhz64k] hr{border:none;border-top:1px solid var(--color-border);margin:2.5em 0}.prose[data-astro-cid-apjhz64k] img{border-radius:4px;margin:1.5em 0}.prose[data-astro-cid-apjhz64k] strong{font-weight:600}
+.tag-list[data-astro-cid-lga65v7i]{display:flex;flex-wrap:wrap;gap:var(--space-xs);margin-top:var(--space-sm)}.tag[data-astro-cid-lga65v7i]{font-family:var(--font-heading);font-size:.75rem;color:var(--color-text-secondary);text-decoration:none;border:1px solid var(--color-border);padding:.125rem .5rem;border-radius:3px;transition:color .15s ease,border-color .15s ease}.tag[data-astro-cid-lga65v7i]:hover{color:var(--color-text);border-color:var(--color-text-secondary)}.series-badge[data-astro-cid-u54u4p2g]{font-family:var(--font-heading);font-size:.8125rem;color:var(--color-text-secondary);border-left:3px solid var(--color-border);padding-left:var(--space-sm);margin-top:var(--space-sm)}.series-badge[data-astro-cid-u54u4p2g] a[data-astro-cid-u54u4p2g]{color:var(--color-text);text-decoration:underline;text-underline-offset:2px}.series-badge[data-astro-cid-u54u4p2g] a[data-astro-cid-u54u4p2g]:hover{color:var(--color-text-secondary)}.author-card[data-astro-cid-32rj7774]{display:flex;align-items:center;gap:var(--space-sm);margin-top:var(--space-sm)}.author-avatar[data-astro-cid-32rj7774]{width:1.75rem;height:1.75rem;border-radius:50%;object-fit:cover}.author-name[data-astro-cid-32rj7774]{font-family:var(--font-heading);font-size:.8125rem;color:var(--color-text-secondary)}.disqus-thread[data-astro-cid-r2x3s5wt]{margin-top:var(--space-2xl)}.article[data-astro-cid-q7kxohas]{max-width:var(--width-content)}.article-header[data-astro-cid-q7kxohas]{margin-bottom:var(--space-xl)}.article-meta[data-astro-cid-q7kxohas]{font-family:var(--font-heading);font-size:.8125rem;color:var(--color-text-tertiary);margin-top:var(--space-sm);display:flex;flex-direction:column;gap:var(--space-xs)}
+</style></head> <body data-astro-cid-dmqsi53g> <div class="page" data-astro-cid-dmqsi53g> <nav class="nav" data-astro-cid-dmqpwcec> <a href="/" class="nav-brand" data-astro-cid-dmqpwcec>ATechieThought Labs</a> <div class="nav-links" data-astro-cid-dmqpwcec> <a href="/tags" data-astro-cid-dmqpwcec>Tags</a> <a href="/series" data-astro-cid-dmqpwcec>Series</a> <a href="/talks" data-astro-cid-dmqpwcec>Talks</a> <a href="/about" data-astro-cid-dmqpwcec>About</a> <a href="/rss.xml" data-astro-cid-dmqpwcec>RSS</a> </div> </nav>  <main data-astro-cid-dmqsi53g>   <article class="article" data-astro-cid-q7kxohas> <header class="article-header" data-astro-cid-q7kxohas> <h1 data-astro-cid-u4qoyrkz="true" class="heading heading-h1"> Time Dimension in Distributed Systems </h1>  <div class="article-meta" data-astro-cid-q7kxohas> <time datetime="2019-12-25T00:00:00.000Z" data-astro-cid-q7kxohas>December 25, 2019</time> <div class="author-card" data-astro-cid-32rj7774> <img src="/images/Lalit_Kale.jpg" alt="Lalit Kale" class="author-avatar" data-astro-cid-32rj7774> <span class="author-name" data-astro-cid-32rj7774>Lalit Kale</span> </div>  <div class="series-badge" data-astro-cid-u54u4p2g>
+Part of the series: <a href="/series/distributed-systems/" data-astro-cid-u54u4p2g>distributed systems</a> </div>  <div class="tag-list" data-astro-cid-lga65v7i><a href="/tags/dist-sys/" class="tag" data-astro-cid-lga65v7i>dist-sys</a></div> </div> </header> <div class="prose" data-astro-cid-apjhz64k>   <p>Time is the essence. It is the most important dimension while dealing with distributed systems. However, the funny thing is — there is no time in distributed systems. It’s all clocks.</p>
+<p>And clocks lie.</p>
+<h2 id="the-illusion-of-a-global-clock">The Illusion of a Global Clock</h2>
+<p>On your laptop, checking the time is trivial. You call <code>System.currentTimeMillis()</code> or <code>time.time()</code> and you get a number. You trust it.</p>
+<p>In a distributed system — a cluster of machines talking over a network — there is no single shared clock. Each machine has its own hardware clock, and those clocks drift. A quartz oscillator is not perfectly precise. Over the course of a day, a machine’s clock might drift by tens or even hundreds of milliseconds compared to true time.</p>
+<p>This seems small. It isn’t.</p>
+<p>Consider two servers, A and B. A writes a record at <code>t=1000</code> and B writes a record at <code>t=999</code>. If you sort by timestamp, B’s write looks earlier. But what if B’s clock was 5ms behind? The actual order was A first, then B. Your log now lies.</p>
+<p>This is the core problem: <strong>we cannot rely on wall-clock time to determine the order of events across machines.</strong></p>
+<h2 id="ntp-good-but-not-good-enough">NTP: Good But Not Good Enough</h2>
+<p>Network Time Protocol (NTP) is how machines synchronize their clocks to reference time servers. A machine periodically asks a time server “what time is it?” and adjusts accordingly.</p>
+<p>NTP achieves typical accuracy of <strong>1–50ms on a local network</strong>, and up to several hundred milliseconds over the public internet. That sounds fine until you remember:</p>
+<ul>
+<li>A database transaction might complete in under 1ms.</li>
+<li>A distributed lock might need sub-millisecond precision.</li>
+<li>NTP corrections can make time <em>jump backward</em> temporarily — a thing called a “time step.”</li>
+</ul>
+<p>Backward jumps are particularly nasty. If your code computes <code>elapsed = end - start</code> and the clock stepped backward between those two calls, you get a negative duration. Or worse: two events get the same timestamp.</p>
+<p>Cloud providers like Google and Amazon run highly disciplined NTP hierarchies (Google uses <a href="https://cloud.google.com/spanner/docs/true-time-external-consistency">GPS and atomic clocks</a>) but even they admit uncertainty bounds. Google’s TrueTime API explicitly returns a time as an <em>interval</em> <code>[earliest, latest]</code> rather than a precise moment.</p>
+<h2 id="happens-before-reasoning-without-a-clock">Happens-Before: Reasoning Without a Clock</h2>
+<p>In 1978, Leslie Lamport published a paper that changed how we think about time in distributed systems: <em>“Time, Clocks, and the Ordering of Events in a Distributed System.”</em></p>
+<p>His key insight: <strong>you don’t need a clock to define order. You need causality.</strong></p>
+<p>He defined a relation called <em>happens-before</em> (written <code>→</code>):</p>
+<ol>
+<li>If <code>a</code> and <code>b</code> are events in the same process and <code>a</code> occurs before <code>b</code>, then <code>a → b</code>.</li>
+<li>If <code>a</code> is the sending of a message and <code>b</code> is the receipt of that message, then <code>a → b</code>.</li>
+<li>If <code>a → b</code> and <code>b → c</code>, then <code>a → c</code> (transitivity).</li>
+</ol>
+<p>Two events are <strong>concurrent</strong> if neither happens-before the other — meaning no causal relationship exists between them.</p>
+<p>This is elegant. It doesn’t care about wall-clock time at all.</p>
+<h2 id="lamport-clocks">Lamport Clocks</h2>
+<p>To make happens-before <em>computable</em>, Lamport introduced logical clocks.</p>
+<p>The rules are simple:</p>
+<ol>
+<li>Each process maintains a counter, initially 0.</li>
+<li>Before each event, the process increments its counter.</li>
+<li>When sending a message, include the current counter value.</li>
+<li>When receiving a message with counter <code>T</code>, set your counter to <code>max(local, T) + 1</code>.</li>
+</ol>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>Process A       Process B</span></span>
+<span class="line"><span>counter=0       counter=0</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>A: event1</span></span>
+<span class="line"><span>counter=1</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>A → B: send(msg, counter=1)</span></span>
+<span class="line"><span>                B receives msg</span></span>
+<span class="line"><span>                counter = max(0, 1) + 1 = 2</span></span>
+<span class="line"><span>                B: event2, counter=2</span></span></code></pre>
+<p>Now you can compare: if event <code>e</code> has Lamport timestamp <code>L(e)</code>, then <code>a → b</code> implies <code>L(a) &#x3C; L(b)</code>. <strong>The converse is not true.</strong> If <code>L(a) &#x3C; L(b)</code>, you can’t conclude <code>a → b</code> — they might be concurrent.</p>
+<p>Lamport clocks give you a <em>consistent</em> total ordering but not a <em>causal</em> one.</p>
+<h2 id="vector-clocks">Vector Clocks</h2>
+<p>Vector clocks fix the causality gap. Instead of a single counter, each process maintains a <em>vector</em> of counters — one per process in the system.</p>
+<p>For a system with N processes, each process <code>i</code> keeps <code>V[i][0..N-1]</code>.</p>
+<p>Rules:</p>
+<ol>
+<li>On an internal event at process <code>i</code>, increment <code>V[i][i]</code>.</li>
+<li>When sending a message, include the full vector <code>V[i]</code>.</li>
+<li>When process <code>j</code> receives a message with vector <code>Vm</code>, update: <code>V[j][k] = max(V[j][k], Vm[k])</code> for all <code>k</code>, then increment <code>V[j][j]</code>.</li>
+</ol>
+<p>Now you can compare: <code>Va &#x3C; Vb</code> (Va happens-before Vb) if and only if every element of <code>Va</code> is ≤ the corresponding element of <code>Vb</code>, and at least one is strictly less.</p>
+<p>If neither <code>Va ≤ Vb</code> nor <code>Vb ≤ Va</code>, the events are truly <strong>concurrent</strong>.</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>Process A (Pa)    Process B (Pb)    Process C (Pc)</span></span>
+<span class="line"><span>[1,0,0]           send to B</span></span>
+<span class="line"><span>                  [1,1,0]           send to C</span></span>
+<span class="line"><span>                                    [1,1,1]</span></span>
+<span class="line"><span>[2,0,0]           [1,2,0]</span></span></code></pre>
+<p>Vector clocks are used in systems like Amazon Dynamo, Riak, and CRDTs. The tradeoff: they’re O(N) in message size and memory, which is fine for small clusters but painful at scale.</p>
+<h2 id="what-databases-actually-do">What Databases Actually Do</h2>
+<p>Different databases make different tradeoffs:</p>
+<p><strong>Optimistic ordering (most SQL databases):</strong> Use wall-clock timestamps for user-visible data, rely on single-node transactions to be consistent, and accept that cross-node ordering is approximate. Fine for most apps.</p>
+<p><strong>Hybrid Logical Clocks (HLC):</strong> Combine physical time with a logical counter. You get timestamps that are close to real time but also respect causality. Used in CockroachDB.</p>
+<p><strong>TrueTime (Google Spanner):</strong> Use GPS/atomic clock hardware to bound clock uncertainty to ~7ms, then commit-wait — the database literally waits until the uncertainty window has passed before confirming a write. Expensive in latency but guarantees external consistency.</p>
+<p><strong>Paxos/Raft epoch numbers:</strong> Consensus protocols like Raft assign monotonically increasing term numbers. They don’t use wall-clock time at all — ordering is enforced by the protocol itself.</p>
+<h2 id="why-it-matters-for-you">Why It Matters for You</h2>
+<p>Even if you’re not building a distributed database, you’re probably using distributed systems every day. Microservices, message queues, event logs — all of them face this problem.</p>
+<p>Some practical rules of thumb:</p>
+<ul>
+<li><strong>Don’t use timestamps as unique IDs.</strong> Two events can have the same millisecond timestamp. Use UUIDs, Snowflake IDs, or ULID.</li>
+<li><strong>Don’t sort distributed events by timestamp alone.</strong> If correctness matters, use vector clocks or a central sequencer.</li>
+<li><strong>Don’t assume your clocks are monotonic.</strong> Most languages have a “monotonic clock” separate from the wall clock — use it for measuring durations (<code>time.monotonic()</code> in Python, <code>System.nanoTime()</code> in Java).</li>
+<li><strong>Add sequence numbers to your messages.</strong> Even a simple per-sender counter helps detect reordering and duplicates.</li>
+</ul>
+<h2 id="the-deeper-lesson">The Deeper Lesson</h2>
+<p>Time, in the physical sense, is something we experience as a shared, linear reality. In distributed systems, that shared reality doesn’t exist. Each node lives in its own subjective present.</p>
+<p>What we actually care about is not <em>when</em> something happened on the universal timeline, but <em>what caused what</em>. Lamport’s insight — that causality, not time, is the fundamental primitive — is one of the most useful ideas in computer science.</p>
+<p>The next time you’re debugging a race condition in a distributed system and you find yourself staring at conflicting timestamps, remember: the clocks aren’t broken. They were never telling you what you thought they were.</p>
+<hr>
+<p><strong>References:</strong></p>
+<ol>
+<li>Lamport, L. (1978). <a href="https://lamport.azurewebsites.net/pubs/time-clocks.pdf">Time, Clocks, and the Ordering of Events in a Distributed System</a>. <em>Communications of the ACM</em>.</li>
+<li>Kleppmann, M. (2017). <em>Designing Data-Intensive Applications</em>. O’Reilly. Chapter 8.</li>
+<li>DeCandia et al. (2007). <a href="https://www.allthingsdistributed.com/files/amazon-dynamo-sosp2007.pdf">Dynamo: Amazon’s Highly Available Key-value Store</a>. <em>SOSP</em>.</li>
+<li>Corbett et al. (2012). <a href="https://static.googleusercontent.com/media/research.google.com/en//archive/spanner-osdi2012.pdf">Spanner: Google’s Globally Distributed Database</a>. <em>OSDI</em>.</li>
+</ol>   </div>  <div id="disqus_thread" class="disqus-thread" data-astro-cid-r2x3s5wt></div> <script>(function(){const shortname = "atechiethought";
+const pageUrl = "https://lalitkale.github.io/posts/time-dimension-in-distributed-systems";
+const pageIdentifier = "time-dimension-in-distributed-systems";
+
+  var disqus_config = function () {
+    this.page.url = pageUrl;
+    this.page.identifier = pageIdentifier;
+  };
+  (function () {
+    var d = document,
+      s = d.createElement("script");
+    s.src = "https://" + shortname + ".disqus.com/embed.js";
+    s.setAttribute("data-timestamp", +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+})();</script> <noscript>
+Please enable JavaScript to view the
+<a href="https://disqus.com/?ref_noscript" data-astro-cid-r2x3s5wt>comments powered by Disqus.</a> </noscript>  </article>   </main> <footer class="footer" data-astro-cid-sz7xmlte> <p data-astro-cid-sz7xmlte>Built with <a href="https://astro.build" target="_blank" rel="noopener" data-astro-cid-sz7xmlte>Astro</a> &mdash; 2026-02-26 20:03 UTC</p> </footer>  </div> </body></html>
