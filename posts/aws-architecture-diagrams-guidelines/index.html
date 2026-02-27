@@ -1,0 +1,107 @@
+<!DOCTYPE html><html lang="en" data-astro-cid-dmqsi53g> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>AWS Architecture Diagrams Guidelines — ATechieThought Labs</title><meta name="description" content="Practical guidelines for drawing meaningful AWS architectural diagrams — covering logical views, physical/deployment views, and common pitfalls to avoid."><link rel="canonical" href="https://lalitkale.github.io/posts/aws-architecture-diagrams-guidelines/"><!-- Open Graph --><meta property="og:type" content="article"><meta property="og:title" content="AWS Architecture Diagrams Guidelines — ATechieThought Labs"><meta property="og:description" content="Practical guidelines for drawing meaningful AWS architectural diagrams — covering logical views, physical/deployment views, and common pitfalls to avoid."><meta property="og:url" content="https://lalitkale.github.io/posts/aws-architecture-diagrams-guidelines/"><meta property="og:site_name" content="ATechieThought Labs"><!-- Twitter --><meta name="twitter:card" content="summary"><meta name="twitter:title" content="AWS Architecture Diagrams Guidelines — ATechieThought Labs"><meta name="twitter:description" content="Practical guidelines for drawing meaningful AWS architectural diagrams — covering logical views, physical/deployment views, and common pitfalls to avoid."><!-- JSON-LD --><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"AWS Architecture Diagrams Guidelines","description":"Practical guidelines for drawing meaningful AWS architectural diagrams — covering logical views, physical/deployment views, and common pitfalls to avoid.","datePublished":"2022-10-25T00:00:00.000Z","url":"https://lalitkale.github.io/posts/aws-architecture-diagrams-guidelines","mainEntityOfPage":{"@type":"WebPage","@id":"https://lalitkale.github.io/posts/aws-architecture-diagrams-guidelines"},"author":{"@type":"Person","name":"Lalit Kale"},"publisher":{"@type":"Organization","name":"ATechieThought Labs","url":"https://lalitkale.github.io"}}</script><link rel="alternate" type="application/rss+xml" title="ATechieThought Labs" href="/rss.xml"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:ital,wght@0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet"><style>.nav[data-astro-cid-dmqpwcec]{display:flex;justify-content:space-between;align-items:baseline;padding:var(--space-lg) 0;border-bottom:1px solid var(--color-border);margin-bottom:var(--space-2xl)}.nav-brand[data-astro-cid-dmqpwcec]{font-family:var(--font-heading);font-size:.875rem;font-weight:600;letter-spacing:-.01em;text-decoration:none;color:var(--color-text)}.nav-brand[data-astro-cid-dmqpwcec]:hover{color:var(--color-text-secondary)}.nav-links[data-astro-cid-dmqpwcec]{display:flex;gap:var(--space-lg)}.nav-links[data-astro-cid-dmqpwcec] a[data-astro-cid-dmqpwcec]{font-family:var(--font-heading);font-size:.8125rem;color:var(--color-text-secondary);text-decoration:none}.nav-links[data-astro-cid-dmqpwcec] a[data-astro-cid-dmqpwcec]:hover,.nav-links[data-astro-cid-dmqpwcec] a[data-astro-cid-dmqpwcec].active{color:var(--color-text)}.footer[data-astro-cid-sz7xmlte]{margin-top:var(--space-2xl);padding:var(--space-lg) 0;border-top:1px solid var(--color-border)}.footer[data-astro-cid-sz7xmlte] p[data-astro-cid-sz7xmlte]{font-family:var(--font-heading);font-size:.75rem;color:var(--color-text-tertiary)}.footer[data-astro-cid-sz7xmlte] a[data-astro-cid-sz7xmlte]{color:var(--color-text-tertiary)}.footer[data-astro-cid-sz7xmlte] a[data-astro-cid-sz7xmlte]:hover{color:var(--color-text-secondary)}:root{--font-body: "Newsreader", Georgia, "Times New Roman", serif;--font-heading: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;--font-mono: "JetBrains Mono", "Fira Code", Consolas, monospace;--color-text: #1a1a1a;--color-text-secondary: #555;--color-text-tertiary: #888;--color-bg: #fafaf9;--color-surface: #fff;--color-border: #e5e5e3;--color-link: #1a1a1a;--color-link-hover: #555;--color-code-bg: #f4f4f2;--width-content: 640px;--width-page: 720px;--space-xs: .25rem;--space-sm: .5rem;--space-md: 1rem;--space-lg: 2rem;--space-xl: 3rem;--space-2xl: 5rem}*,*:before,*:after{margin:0;padding:0;box-sizing:border-box}html{font-size:18px;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility}body{font-family:var(--font-body);color:var(--color-text);background-color:var(--color-bg);line-height:1.7}a{color:var(--color-link);text-decoration-thickness:1px;text-underline-offset:2px;transition:color .15s ease}a:hover{color:var(--color-link-hover)}img{max-width:100%;height:auto;display:block}::selection{background-color:#d4d4d0}.page[data-astro-cid-dmqsi53g]{max-width:var(--width-page);margin:0 auto;padding:0 var(--space-lg);min-height:100vh;display:flex;flex-direction:column}main[data-astro-cid-dmqsi53g]{flex:1}
+.heading[data-astro-cid-u4qoyrkz]{font-family:var(--font-heading);color:var(--color-text);letter-spacing:-.02em;line-height:1.2}.heading-h1[data-astro-cid-u4qoyrkz]{font-size:2rem;font-weight:700;margin-bottom:var(--space-md)}.heading-h2[data-astro-cid-u4qoyrkz]{font-size:1.375rem;font-weight:600;margin-top:var(--space-xl);margin-bottom:var(--space-sm)}.heading-h3[data-astro-cid-u4qoyrkz]{font-size:1.125rem;font-weight:600;margin-top:var(--space-lg);margin-bottom:var(--space-sm)}
+.prose[data-astro-cid-apjhz64k]{font-family:var(--font-body);font-size:1rem;line-height:1.75;color:var(--color-text)}.prose[data-astro-cid-apjhz64k] p{margin-bottom:1.5em}.prose[data-astro-cid-apjhz64k] h2{font-family:var(--font-heading);font-size:1.375rem;font-weight:600;letter-spacing:-.02em;line-height:1.3;margin-top:2.5em;margin-bottom:.75em;color:var(--color-text)}.prose[data-astro-cid-apjhz64k] h3{font-family:var(--font-heading);font-size:1.125rem;font-weight:600;letter-spacing:-.01em;line-height:1.4;margin-top:2em;margin-bottom:.5em;color:var(--color-text)}.prose[data-astro-cid-apjhz64k] a{color:var(--color-link);text-decoration-thickness:1px;text-underline-offset:2px}.prose[data-astro-cid-apjhz64k] a:hover{color:var(--color-link-hover)}.prose[data-astro-cid-apjhz64k] blockquote{border-left:2px solid var(--color-border);padding-left:var(--space-lg);margin:1.5em 0;color:var(--color-text-secondary);font-style:italic}.prose[data-astro-cid-apjhz64k] ul,.prose[data-astro-cid-apjhz64k] ol{margin-bottom:1.5em;padding-left:1.5em}.prose[data-astro-cid-apjhz64k] li{margin-bottom:.375em}.prose[data-astro-cid-apjhz64k] code{font-family:var(--font-mono);font-size:.85em;background-color:var(--color-code-bg);padding:.125em .375em;border-radius:3px}.prose[data-astro-cid-apjhz64k] pre{background-color:var(--color-code-bg);padding:var(--space-lg);border-radius:4px;overflow-x:auto;margin:1.5em 0;line-height:1.5}.prose[data-astro-cid-apjhz64k] pre code{background:none;padding:0;font-size:.8125rem}.prose[data-astro-cid-apjhz64k] hr{border:none;border-top:1px solid var(--color-border);margin:2.5em 0}.prose[data-astro-cid-apjhz64k] img{border-radius:4px;margin:1.5em 0}.prose[data-astro-cid-apjhz64k] strong{font-weight:600}
+.tag-list[data-astro-cid-lga65v7i]{display:flex;flex-wrap:wrap;gap:var(--space-xs);margin-top:var(--space-sm)}.tag[data-astro-cid-lga65v7i]{font-family:var(--font-heading);font-size:.75rem;color:var(--color-text-secondary);text-decoration:none;border:1px solid var(--color-border);padding:.125rem .5rem;border-radius:3px;transition:color .15s ease,border-color .15s ease}.tag[data-astro-cid-lga65v7i]:hover{color:var(--color-text);border-color:var(--color-text-secondary)}.series-badge[data-astro-cid-u54u4p2g]{font-family:var(--font-heading);font-size:.8125rem;color:var(--color-text-secondary);border-left:3px solid var(--color-border);padding-left:var(--space-sm);margin-top:var(--space-sm)}.series-badge[data-astro-cid-u54u4p2g] a[data-astro-cid-u54u4p2g]{color:var(--color-text);text-decoration:underline;text-underline-offset:2px}.series-badge[data-astro-cid-u54u4p2g] a[data-astro-cid-u54u4p2g]:hover{color:var(--color-text-secondary)}.author-card[data-astro-cid-32rj7774]{display:flex;align-items:center;gap:var(--space-sm);margin-top:var(--space-sm)}.author-avatar[data-astro-cid-32rj7774]{width:1.75rem;height:1.75rem;border-radius:50%;object-fit:cover}.author-name[data-astro-cid-32rj7774]{font-family:var(--font-heading);font-size:.8125rem;color:var(--color-text-secondary)}.disqus-thread[data-astro-cid-r2x3s5wt]{margin-top:var(--space-2xl)}.article[data-astro-cid-q7kxohas]{max-width:var(--width-content)}.article-header[data-astro-cid-q7kxohas]{margin-bottom:var(--space-xl)}.article-meta[data-astro-cid-q7kxohas]{font-family:var(--font-heading);font-size:.8125rem;color:var(--color-text-tertiary);margin-top:var(--space-sm);display:flex;flex-direction:column;gap:var(--space-xs)}
+</style></head> <body data-astro-cid-dmqsi53g> <div class="page" data-astro-cid-dmqsi53g> <nav class="nav" data-astro-cid-dmqpwcec> <a href="/" class="nav-brand" data-astro-cid-dmqpwcec>ATechieThought Labs</a> <div class="nav-links" data-astro-cid-dmqpwcec> <a href="/tags" data-astro-cid-dmqpwcec>Tags</a> <a href="/series" data-astro-cid-dmqpwcec>Series</a> <a href="/talks" data-astro-cid-dmqpwcec>Talks</a> <a href="/about" data-astro-cid-dmqpwcec>About</a> <a href="/rss.xml" data-astro-cid-dmqpwcec>RSS</a> </div> </nav>  <main data-astro-cid-dmqsi53g>   <article class="article" data-astro-cid-q7kxohas> <header class="article-header" data-astro-cid-q7kxohas> <h1 data-astro-cid-u4qoyrkz="true" class="heading heading-h1"> AWS Architecture Diagrams Guidelines </h1>  <div class="article-meta" data-astro-cid-q7kxohas> <time datetime="2022-10-25T00:00:00.000Z" data-astro-cid-q7kxohas>October 25, 2022</time> <div class="author-card" data-astro-cid-32rj7774> <img src="/images/Lalit_Kale.jpg" alt="Lalit Kale" class="author-avatar" data-astro-cid-32rj7774> <span class="author-name" data-astro-cid-32rj7774>Lalit Kale</span> </div>   <div class="tag-list" data-astro-cid-lga65v7i><a href="/tags/aws/" class="tag" data-astro-cid-lga65v7i>aws</a><a href="/tags/architecture/" class="tag" data-astro-cid-lga65v7i>architecture</a><a href="/tags/best-practices/" class="tag" data-astro-cid-lga65v7i>best-practices</a></div> </div> </header> <div class="prose" data-astro-cid-apjhz64k>   <p>AWS architectural diagrams represent AWS resources and other significant objects and their relationships. They communicate the exact blueprints of solutions. Yet many engineers and architects struggle to produce good diagrams — you’ll find many diagrams on the internet that don’t represent meaningful context.</p>
+<p>This article provides guidelines on how to draw architectural diagrams, drawn from my own experience and from the wider AWS community.</p>
+<hr>
+<h2 id="why-architectural-diagrams-matter">Why Architectural Diagrams Matter</h2>
+<p>On the surface, it may look simple to doodle a couple of boxes and arrows. But it is a critical activity from a system perspective. Let’s explore why architectural diagrams are even part of the skill set of any good architect.</p>
+<p><strong>Conceptual integrity</strong> is one of the key factors for successful architecture. It is the quality of a system where all the concepts and their relationships are consistently applied throughout. Even if many people work on the system, it would seem cohesive and consistent — as if only one mind was guiding the work.</p>
+<blockquote>
+<p>I will contend that conceptual integrity is the most important consideration in system design. It is better to have a system omit certain anomalous features and improvements, but to reflect one set of design ideas, than to have one that contains many good but independent and uncoordinated ideas.
+— Frederick Brooks, <em>The Mythical Man-Month</em></p>
+</blockquote>
+<p>Many great technical people are not known for their communication skills. This simple fact hampers the communication of vision. Time is another big factor through which conceptual integrity fades. This signifies the importance of having and maintaining architectural diagrams.</p>
+<hr>
+<h2 id="formal-architectural-documentation-models">Formal Architectural Documentation Models</h2>
+<p>There is no consensus on a single method in the wider software architecture community, but some well-known documentation models exist.</p>
+<h3 id="c4-model">C4 Model</h3>
+<p>Simon Brown’s <a href="https://c4model.com/">C4 model</a> visualizes architecture through Context, Containers, Components, and Code layers. It comes with a recommended set of symbols and encourages text-heavy diagrams. It may or may not be sufficient to describe a full cloud-based architecture — share your experience if you’ve used it for AWS architectures.</p>
+<h3 id="41-views">4+1 Views</h3>
+<p>Philippe Kruchten’s <a href="https://www.cs.ubc.ca/~gregor/teaching/papers/4+1view-architecture.pdf">4+1 views</a> represent the system from different stakeholders’ standpoints: logical, development, process, and physical views, each represented by different UML diagrams.</p>
+<p>I have been practising 4+1 views for a long time. I use the <strong>official AWS icon set</strong> to depict the deployment/physical view. AWS has published the <a href="https://aws.amazon.com/architecture/icons/">official icon set</a> to build architectural diagrams — its use brings consistency among practitioners. The icon set is also available for many diagramming tools.</p>
+<hr>
+<h2 id="logical-view-guidelines">Logical View Guidelines</h2>
+<ol>
+<li><strong>Develop your mental model before drawing.</strong> Without a mental model, you will fail to draw any meaningful diagram.</li>
+<li><strong>Always maintain conceptual integrity.</strong> Does the system look cohesive enough to serve its purpose? Do subcomponents have a single purpose of existence?</li>
+<li><strong>Use consistent shapes and forms</strong> to communicate different subsystems and components.</li>
+<li><strong>Consider the C4 model</strong> for depicting the logical view.</li>
+<li><strong>Do not mix vendor-specific symbols</strong> in logical views. Avoid using AWS icons to represent components in logical view diagrams — keep it technology-agnostic.</li>
+</ol>
+<hr>
+<h2 id="physical-view-aws-deployment-diagram-guidelines">Physical View (AWS Deployment Diagram) Guidelines</h2>
+<ol>
+<li>
+<p><strong>Treat diagrams as testable infrastructure blueprints.</strong> Network and deployment diagrams are like actual builds — you can test them before building the real infrastructure. Data flow traceability makes these diagrams a valuable asset.</p>
+</li>
+<li>
+<p><strong>Consistency is key.</strong> Don’t represent an EC2 instance with two different icons. Use the latest official AWS diagramming icon set. There have been three iterations — pick one version and don’t mix symbols from others.</p>
+</li>
+<li>
+<p><strong>Depict one or at most two flows in a single diagram.</strong> Don’t try to showcase every flow and every resource in one diagram.</p>
+</li>
+<li>
+<p><strong>Don’t copy AWS reference architecture diagrams verbatim.</strong> <a href="https://aws.amazon.com/architecture/reference-architecture-diagrams">AWS reference architecture diagrams</a> are one-pagers for conversations. Your intent and usage may differ.</p>
+</li>
+<li>
+<p><strong>Put the title on top.</strong> The title should communicate the system and the diagram’s purpose or intent.</p>
+</li>
+<li>
+<p><strong>Depict the AWS account boundary</strong> — even if your solution has a single account. For multi-account scenarios, show only participating accounts; prepare a separate multi-account diagram.</p>
+</li>
+<li>
+<p><strong>Represent global, regional, and zonal AWS services per their scope.</strong> S3 is a global service — it lives inside the account boundary but not within a VPC. A VPC is regional, so it lives inside a region.</p>
+</li>
+<li>
+<p><strong>Avoid too many lines.</strong> When many relationships exist, use color-coding or omit non-critical connections. For example: a blue line for US-East-1 traffic, a red line for EU-West-1.</p>
+</li>
+<li>
+<p><strong>Don’t assume everyone knows conventions.</strong> Private subnets are often shown with a blue background and public subnets with green — but don’t assume your audience knows this. Add a legend.</p>
+</li>
+<li>
+<p><strong>Maintain diagrams over time.</strong> Architectural diagrams are part of your organization’s knowledge base. They lose value if implementation diverges. Invest in periodic reviews.</p>
+</li>
+<li>
+<p><strong>At minimum, diagram the production environment.</strong> Other environments (dev, staging) are optional.</p>
+</li>
+<li>
+<p><strong>Verify arrow directions</strong> to ensure they accurately represent the intended data flow.</p>
+</li>
+<li>
+<p><strong>Show return traffic with dashed arrows.</strong></p>
+</li>
+<li>
+<p><strong>Show logical groupings</strong> — e.g., a group of Lambdas representing a service, enclosed in a box with dashed lines.</p>
+</li>
+<li>
+<p><strong>Always peer-review architecture diagrams.</strong> If your peers have to ask many questions or need verbal explanation, revisit the diagram.</p>
+</li>
+</ol>
+<hr>
+<h2 id="closing-thoughts">Closing Thoughts</h2>
+<p>Architectural diagrams are organizational assets with long-lasting value. Like code, they require maintenance to stay useful. The investment you make in keeping them current pays dividends across teams and time.</p>
+<hr>
+<p><strong>References:</strong></p>
+<ol>
+<li><a href="https://www.infoq.com/articles/crafting-architectural-diagrams/">Crafting Architectural Diagrams — InfoQ</a></li>
+<li><em>The Mythical Man-Month: Essays on Software Engineering</em> — Frederick Brooks</li>
+</ol>   </div>  <div id="disqus_thread" class="disqus-thread" data-astro-cid-r2x3s5wt></div> <script>(function(){const shortname = "atechiethought";
+const pageUrl = "https://lalitkale.github.io/posts/aws-architecture-diagrams-guidelines";
+const pageIdentifier = "aws-architecture-diagrams-guidelines";
+
+  var disqus_config = function () {
+    this.page.url = pageUrl;
+    this.page.identifier = pageIdentifier;
+  };
+  (function () {
+    var d = document,
+      s = d.createElement("script");
+    s.src = "https://" + shortname + ".disqus.com/embed.js";
+    s.setAttribute("data-timestamp", +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+})();</script> <noscript>
+Please enable JavaScript to view the
+<a href="https://disqus.com/?ref_noscript" data-astro-cid-r2x3s5wt>comments powered by Disqus.</a> </noscript>  </article>   </main> <footer class="footer" data-astro-cid-sz7xmlte> <p data-astro-cid-sz7xmlte>Built with <a href="https://astro.build" target="_blank" rel="noopener" data-astro-cid-sz7xmlte>Astro</a> &mdash; 2026-02-27 22:24 UTC</p> </footer>  </div> </body></html>
