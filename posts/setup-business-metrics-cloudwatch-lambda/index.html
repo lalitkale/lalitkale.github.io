@@ -65,7 +65,11 @@
 <p>Upload <code>orderservice.zip</code> to your Lambda function via the AWS Console.</p>
 <h3 id="step-5-test-and-verify">Step 5: Test and verify</h3>
 <p>After uploading, test the Lambda with a test event. To simulate real-world traffic, invoke the Lambda function multiple times using the console’s <strong>Test</strong> feature.</p>
-<p>After a few seconds, you’ll see the <code>OrderManagement</code> custom metric appear under <strong>CloudWatch → Metrics</strong>. From there you can:</p>
+<p>After a few seconds, you’ll see the <code>OrderManagement</code> custom metric appear under <strong>CloudWatch → Metrics</strong>.</p>
+<p><img src="/images/cloudwatch-metrics/orderservice-custom-metric.png" alt="orderservice custom metric"></p>
+<p>Clicking on the <code>OrderManagement</code> metric, you can see <code>CustomerId</code>, <code>Service</code>, <code>ServiceType</code> and <code>ServiceName</code> dimensions. After small touch ups on the graph, the final output of custom metric looks as below.</p>
+<p><img src="/images/cloudwatch-metrics/orderservice-final-view.png" alt="orderservice final view of custom metric"></p>
+<p>From there you can:</p>
 <ul>
 <li>Build dashboards tracking <code>Avg. Order Value</code> over time</li>
 <li>Set CloudWatch alarms — for example, alert when an order exceeds USD 50 million</li>
@@ -91,4 +95,4 @@ const pageIdentifier = "setup-business-metrics-cloudwatch-lambda";
   })();
 })();</script> <noscript>
 Please enable JavaScript to view the
-<a href="https://disqus.com/?ref_noscript" data-astro-cid-r2x3s5wt>comments powered by Disqus.</a> </noscript>  </article>   </main> <footer class="footer" data-astro-cid-sz7xmlte> <p data-astro-cid-sz7xmlte>Built with <a href="https://astro.build" target="_blank" rel="noopener" data-astro-cid-sz7xmlte>Astro</a> &mdash; 2026-02-27 22:50 UTC</p> </footer>  </div> </body></html>
+<a href="https://disqus.com/?ref_noscript" data-astro-cid-r2x3s5wt>comments powered by Disqus.</a> </noscript>  </article>   </main> <footer class="footer" data-astro-cid-sz7xmlte> <p data-astro-cid-sz7xmlte>Built with <a href="https://astro.build" target="_blank" rel="noopener" data-astro-cid-sz7xmlte>Astro</a> &mdash; 2026-02-27 22:55 UTC</p> </footer>  </div> </body></html>

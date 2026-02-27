@@ -8,6 +8,8 @@
 </blockquote>
 <p>Take, for example, <strong>Sales</strong> and <strong>Support</strong> systems within an organization. Both deal with a <code>Customer</code>, but they use that concept differently. So what’s the right way to model this scenario in line with DDD principles?</p>
 <p>Let’s explore.</p>
+<p><img src="/images/ddd-bounded-contexts/bounded-context-sales-support.png" alt="Bounded Context of Sales and Support">
+<em>Image courtesy: <a href="https://martinfowler.com/bliki/BoundedContext.html">martinfowler.com/bliki/BoundedContext.html</a></em></p>
 <hr>
 <h2 id="understanding-the-problem-shared-concepts-divergent-needs">Understanding the Problem: Shared Concepts, Divergent Needs</h2>
 <p>In many organizations:</p>
@@ -39,6 +41,7 @@
 <h2 id="integration-through-events-the-ddd-way">Integration Through Events: The DDD Way</h2>
 <p>In a properly decoupled system, Sales might <strong>publish domain events</strong> such as <code>CustomerCreated</code>, <code>CustomerUpdated</code>, or <code>LeadConverted</code>.
 Support consumes these events and updates its own <code>SupportCustomer</code> read model.</p>
+<p><img src="/images/ddd-bounded-contexts/ddd-context-map.png" alt="DDD Context Map of Sales and Support"></p>
 <p>This keeps the systems loosely coupled and allows each to evolve independently.</p>
 <hr>
 <h2 id="other-modeling-strategies">Other Modeling Strategies</h2>
@@ -93,4 +96,4 @@ const pageIdentifier = "modeling-shared-entities-across-bounded-contexts-in-ddd"
   })();
 })();</script> <noscript>
 Please enable JavaScript to view the
-<a href="https://disqus.com/?ref_noscript" data-astro-cid-r2x3s5wt>comments powered by Disqus.</a> </noscript>  </article>   </main> <footer class="footer" data-astro-cid-sz7xmlte> <p data-astro-cid-sz7xmlte>Built with <a href="https://astro.build" target="_blank" rel="noopener" data-astro-cid-sz7xmlte>Astro</a> &mdash; 2026-02-27 22:50 UTC</p> </footer>  </div> </body></html>
+<a href="https://disqus.com/?ref_noscript" data-astro-cid-r2x3s5wt>comments powered by Disqus.</a> </noscript>  </article>   </main> <footer class="footer" data-astro-cid-sz7xmlte> <p data-astro-cid-sz7xmlte>Built with <a href="https://astro.build" target="_blank" rel="noopener" data-astro-cid-sz7xmlte>Astro</a> &mdash; 2026-02-27 22:55 UTC</p> </footer>  </div> </body></html>
