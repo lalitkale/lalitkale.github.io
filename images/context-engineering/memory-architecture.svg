@@ -1,0 +1,180 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 520" font-family="system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif">
+
+  <!-- Warm background -->
+  <rect width="960" height="520" fill="#F7F5EF"/>
+
+  <!-- Title -->
+  <text x="480" y="40" text-anchor="middle" fill="#1A1816" font-size="22" font-weight="700" letter-spacing="-0.3">Three-Tier Memory Architecture for Agentic Systems</text>
+  <text x="480" y="63" text-anchor="middle" fill="#6B6860" font-size="14">Speed decreases · Capacity increases · Cost decreases - as you go deeper</text>
+
+
+  <!-- ══════════════ TIER 1: WORKING MEMORY ══════════════ -->
+
+  <!-- Card white base -->
+  <rect x="30" y="80" width="280" height="370" rx="14" fill="#FFFFFF" stroke="#C5D5EA" stroke-width="1.5"/>
+  <!-- Colored header with rounded top corners only -->
+  <path d="M30,94 Q30,80 44,80 L296,80 Q310,80 310,94 L310,208 L30,208 Z" fill="#5B8FC4"/>
+
+  <!-- Lightning bolt icon centered at (170, 143) -->
+  <g transform="translate(170, 143)">
+    <path d="M8,-22 L-8,-2 L2,-2 L-8,22 L8,2 L-2,2 Z" fill="white" opacity="0.95"/>
+  </g>
+
+  <!-- Tier label -->
+  <text x="170" y="184" text-anchor="middle" fill="white" font-size="15" font-weight="700" letter-spacing="-0.2">Working Memory</text>
+  <text x="170" y="203" text-anchor="middle" fill="rgba(255,255,255,0.72)" font-size="10" letter-spacing="2">TIER 1 · IN-CONTEXT</text>
+
+  <!-- Pill 1: Latency -->
+  <rect x="50" y="222" width="240" height="36" rx="8" fill="#EEF3FA" stroke="#C5D5EA" stroke-width="1"/>
+  <circle cx="70" cy="240" r="7" fill="#5B8FC4"/>
+  <text x="70" y="244" text-anchor="middle" fill="white" font-size="8.5" font-weight="700">ms</text>
+  <text x="87" y="236" fill="#1A1816" font-size="12" font-weight="600">0ms latency</text>
+  <text x="87" y="250" fill="#6B6860" font-size="11">fully in-context · zero overhead</text>
+
+  <!-- Pill 2: Capacity -->
+  <rect x="50" y="266" width="240" height="36" rx="8" fill="#F5F4EF" stroke="#D9D6CC" stroke-width="1"/>
+  <circle cx="70" cy="284" r="7" fill="#5B8FC4"/>
+  <text x="70" y="288" text-anchor="middle" fill="white" font-size="8" font-weight="700">ctx</text>
+  <text x="87" y="280" fill="#1A1816" font-size="12" font-weight="600">128K – 1M tokens</text>
+  <text x="87" y="294" fill="#6B6860" font-size="11">hard limit · every token counts</text>
+
+  <!-- Pill 3: Warning -->
+  <rect x="50" y="310" width="240" height="36" rx="8" fill="#FDECEA" stroke="#F0C8C3" stroke-width="1"/>
+  <circle cx="70" cy="328" r="7" fill="#C04E42"/>
+  <text x="70" y="332" text-anchor="middle" fill="white" font-size="9" font-weight="700">!</text>
+  <text x="87" y="324" fill="#C04E42" font-size="12" font-weight="700">Scarcest resource</text>
+  <text x="87" y="338" fill="#9E9C96" font-size="11">context rot starts here</text>
+
+  <!-- Footer -->
+  <text x="170" y="370" text-anchor="middle" fill="#6B6860" font-size="11.5">Prompt · tool defs · task state</text>
+  <text x="170" y="385" text-anchor="middle" fill="#9E9C96" font-size="11">+ recent turns (compressed)</text>
+  <text x="170" y="428" text-anchor="middle" fill="#5B8FC4" font-size="11" font-weight="600" font-style="italic">← RAG pulls Tier 3 content into here</text>
+
+
+  <!-- ══════════════ ARROW 1: overflow / compress ══════════════ -->
+  <line x1="316" y1="266" x2="340" y2="266" stroke="#D9D6CC" stroke-width="1.8"/>
+  <polygon points="336,260 347,266 336,272" fill="#D9D6CC"/>
+  <text x="329" y="256" text-anchor="middle" fill="#9E9C96" font-size="10">overflow</text>
+  <text x="329" y="283" text-anchor="middle" fill="#9E9C96" font-size="10">compress</text>
+
+
+  <!-- ══════════════ TIER 2: SHORT-TERM MEMORY ══════════════ -->
+
+  <rect x="350" y="80" width="260" height="370" rx="14" fill="#FFFFFF" stroke="#B8DCCF" stroke-width="1.5"/>
+  <path d="M350,94 Q350,80 364,80 L596,80 Q610,80 610,94 L610,208 L350,208 Z" fill="#4A9B85"/>
+
+  <!-- Clock icon centered at (480, 143) -->
+  <g transform="translate(480, 143)">
+    <circle r="26" fill="none" stroke="white" stroke-width="2.8"/>
+    <!-- Tick marks at 12/3/6/9 -->
+    <line x1="0" y1="-26" x2="0" y2="-20" stroke="white" stroke-width="2.5"/>
+    <line x1="26" y1="0" x2="20" y2="0" stroke="white" stroke-width="2.5"/>
+    <line x1="0" y1="26" x2="0" y2="20" stroke="white" stroke-width="2.5"/>
+    <line x1="-26" y1="0" x2="-20" y2="0" stroke="white" stroke-width="2.5"/>
+    <!-- Hour hand ~10:00 -->
+    <line x1="0" y1="0" x2="-13" y2="-15" stroke="white" stroke-width="3" stroke-linecap="round"/>
+    <!-- Minute hand ~12:00 -->
+    <line x1="0" y1="0" x2="0" y2="-20" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+    <circle r="3" fill="white"/>
+  </g>
+
+  <text x="480" y="184" text-anchor="middle" fill="white" font-size="15" font-weight="700" letter-spacing="-0.2">Short-term Memory</text>
+  <text x="480" y="203" text-anchor="middle" fill="rgba(255,255,255,0.72)" font-size="10" letter-spacing="2">TIER 2 · SESSION</text>
+
+  <!-- Pill 1 -->
+  <rect x="370" y="222" width="220" height="36" rx="8" fill="#EEF7F4" stroke="#B8DCCF" stroke-width="1"/>
+  <circle cx="390" cy="240" r="7" fill="#4A9B85"/>
+  <text x="390" y="244" text-anchor="middle" fill="white" font-size="8.5">ms</text>
+  <text x="406" y="236" fill="#1A1816" font-size="12" font-weight="600">1–10ms latency</text>
+  <text x="406" y="250" fill="#6B6860" font-size="11">fast key-value lookup</text>
+
+  <!-- Pill 2 -->
+  <rect x="370" y="266" width="220" height="36" rx="8" fill="#F5F4EF" stroke="#D9D6CC" stroke-width="1"/>
+  <circle cx="390" cy="284" r="7" fill="#4A9B85"/>
+  <text x="390" y="288" text-anchor="middle" fill="white" font-size="8.5">hr</text>
+  <text x="406" y="280" fill="#1A1816" font-size="12" font-weight="600">Hours to days</text>
+  <text x="406" y="294" fill="#6B6860" font-size="11">session-scoped retention</text>
+
+  <!-- Pill 3 -->
+  <rect x="370" y="310" width="220" height="36" rx="8" fill="#EEF7F4" stroke="#B8DCCF" stroke-width="1"/>
+  <circle cx="390" cy="328" r="7" fill="#4A9B85"/>
+  <text x="390" y="332" text-anchor="middle" fill="white" font-size="8">db</text>
+  <text x="406" y="324" fill="#1A1816" font-size="12" font-weight="600">Redis / DynamoDB</text>
+  <text x="406" y="338" fill="#6B6860" font-size="11">+ rolling window compressor</text>
+
+  <!-- Footer -->
+  <text x="480" y="370" text-anchor="middle" fill="#6B6860" font-size="11.5">Compressed history · checkpoints</text>
+  <text x="480" y="385" text-anchor="middle" fill="#9E9C96" font-size="11">intermediate outputs · scratchpad</text>
+  <text x="480" y="428" text-anchor="middle" fill="#4A9B85" font-size="11" font-weight="600" font-style="italic">Key op: summarize before overflow</text>
+
+
+  <!-- ══════════════ ARROW 2: embed + index ══════════════ -->
+  <line x1="616" y1="266" x2="640" y2="266" stroke="#D9D6CC" stroke-width="1.8"/>
+  <polygon points="636,260 647,266 636,272" fill="#D9D6CC"/>
+  <text x="629" y="256" text-anchor="middle" fill="#9E9C96" font-size="10">embed</text>
+  <text x="629" y="283" text-anchor="middle" fill="#9E9C96" font-size="10">+ index</text>
+
+
+  <!-- ══════════════ TIER 3: LONG-TERM MEMORY ══════════════ -->
+
+  <rect x="650" y="80" width="280" height="370" rx="14" fill="#FFFFFF" stroke="#CBBFE8" stroke-width="1.5"/>
+  <path d="M650,94 Q650,80 664,80 L916,80 Q930,80 930,94 L930,208 L650,208 Z" fill="#8B6FBF"/>
+
+  <!-- Database cylinder icon centered at (790, 143) -->
+  <g transform="translate(790, 143)">
+    <!-- Top ellipse (cap) -->
+    <ellipse cx="0" cy="-14" rx="26" ry="8" fill="rgba(255,255,255,0.22)" stroke="white" stroke-width="2.6"/>
+    <!-- Left side -->
+    <line x1="-26" y1="-14" x2="-26" y2="16" stroke="white" stroke-width="2.6"/>
+    <!-- Right side -->
+    <line x1="26" y1="-14" x2="26" y2="16" stroke="white" stroke-width="2.6"/>
+    <!-- Bottom ellipse -->
+    <ellipse cx="0" cy="16" rx="26" ry="8" fill="rgba(255,255,255,0.1)" stroke="white" stroke-width="2.6"/>
+    <!-- Middle stripe (multi-tier database look) -->
+    <ellipse cx="0" cy="1" rx="26" ry="8" fill="none" stroke="white" stroke-width="1.4" opacity="0.6"/>
+  </g>
+
+  <text x="790" y="184" text-anchor="middle" fill="white" font-size="15" font-weight="700" letter-spacing="-0.2">Long-term Memory</text>
+  <text x="790" y="203" text-anchor="middle" fill="rgba(255,255,255,0.72)" font-size="10" letter-spacing="2">TIER 3 · CROSS-SESSION</text>
+
+  <!-- Pill 1 -->
+  <rect x="670" y="222" width="240" height="36" rx="8" fill="#F3EFF9" stroke="#CBBFE8" stroke-width="1"/>
+  <circle cx="690" cy="240" r="7" fill="#8B6FBF"/>
+  <text x="690" y="244" text-anchor="middle" fill="white" font-size="8.5">ms</text>
+  <text x="707" y="236" fill="#1A1816" font-size="12" font-weight="600">10–100ms latency</text>
+  <text x="707" y="250" fill="#6B6860" font-size="11">vector similarity search</text>
+
+  <!-- Pill 2 -->
+  <rect x="670" y="266" width="240" height="36" rx="8" fill="#F5F4EF" stroke="#D9D6CC" stroke-width="1"/>
+  <circle cx="690" cy="284" r="7" fill="#8B6FBF"/>
+  <text x="690" y="288" text-anchor="middle" fill="white" font-size="11">&#x221e;</text>
+  <text x="707" y="280" fill="#1A1816" font-size="12" font-weight="600">Indefinite retention</text>
+  <text x="707" y="294" fill="#6B6860" font-size="11">grows with usage</text>
+
+  <!-- Pill 3 -->
+  <rect x="670" y="310" width="240" height="36" rx="8" fill="#F3EFF9" stroke="#CBBFE8" stroke-width="1"/>
+  <circle cx="690" cy="328" r="7" fill="#8B6FBF"/>
+  <text x="690" y="332" text-anchor="middle" fill="white" font-size="7.5">vec</text>
+  <text x="707" y="324" fill="#1A1816" font-size="12" font-weight="600">Pinecone / pgvector</text>
+  <text x="707" y="338" fill="#6B6860" font-size="11">hybrid semantic + keyword retrieval</text>
+
+  <!-- Footer -->
+  <text x="790" y="370" text-anchor="middle" fill="#6B6860" font-size="11.5">Embeddings · user prefs · domain knowledge</text>
+  <text x="790" y="385" text-anchor="middle" fill="#9E9C96" font-size="11">entity memory · cross-session context</text>
+  <text x="790" y="428" text-anchor="middle" fill="#8B6FBF" font-size="11" font-weight="600" font-style="italic">RAG bridges Tier 3 into Tier 1 at inference time</text>
+
+
+  <!-- ══════════════ RAG RETRIEVAL BRIDGE (bottom arc) ══════════════ -->
+  <!-- Dashed arc from Tier 3 center → Tier 1 center, curving under -->
+  <path d="M790,451 C790,474 170,474 170,451" fill="none" stroke="#4A9B85" stroke-width="2" stroke-dasharray="7,4"/>
+  <!-- Arrowhead at Tier 1 end (pointing up) -->
+  <polygon points="162,458 170,446 178,458" fill="#4A9B85"/>
+
+  <!-- RAG label on arc -->
+  <rect x="384" y="460" width="192" height="22" rx="6" fill="#EEF7F4" stroke="#B8DCCF" stroke-width="1"/>
+  <text x="480" y="475" text-anchor="middle" fill="#4A9B85" font-size="11" font-weight="600">RAG retrieval: Tier 3 &#x2192; Tier 1</text>
+
+  <!-- Bottom note -->
+  <text x="480" y="505" text-anchor="middle" fill="#9E9C96" font-size="12">What you retrieve shapes output quality more than model choice - every RAG call is a context budget decision</text>
+
+</svg>

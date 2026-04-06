@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 580" font-family="system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif">
+
+  <rect width="960" height="580" fill="#F7F5EF"/>
+
+  <!-- Title -->
+  <text x="480" y="48" text-anchor="middle" fill="#1A1816" font-size="22" font-weight="700" letter-spacing="-0.3">Stateless vs. Stateful Context Management</text>
+  <text x="480" y="72" text-anchor="middle" fill="#6B6860" font-size="14">Most production agent failures happen at this boundary</text>
+
+  <!-- CENTER DIVIDER -->
+  <line x1="480" y1="90" x2="480" y2="520" stroke="#E0DDD5" stroke-width="2"/>
+
+  <!-- ── LEFT: STATELESS ── -->
+  <text x="240" y="105" text-anchor="middle" fill="#C97B52" font-size="15" font-weight="700">Stateless</text>
+  <text x="240" y="122" text-anchor="middle" fill="#9E9C96" font-size="12">Each call starts fresh</text>
+
+  <!-- Step 1 -->
+  <rect x="60" y="138" width="360" height="56" rx="10" fill="#FFFFFF" stroke="#E0DDD5" stroke-width="1.5"/>
+  <text x="240" y="163" text-anchor="middle" fill="#1A1816" font-size="13" font-weight="600">User Request</text>
+  <text x="240" y="181" text-anchor="middle" fill="#6B6860" font-size="12">Fresh context assembled from scratch</text>
+
+  <!-- Arrow -->
+  <line x1="240" y1="194" x2="240" y2="214" stroke="#D9D6CC" stroke-width="2"/>
+  <polygon points="233,208 240,220 247,208" fill="#D9D6CC"/>
+
+  <!-- Step 2 -->
+  <rect x="60" y="220" width="360" height="56" rx="10" fill="#FFFFFF" stroke="#E0DDD5" stroke-width="1.5"/>
+  <text x="240" y="245" text-anchor="middle" fill="#1A1816" font-size="13" font-weight="600">LLM Call</text>
+  <text x="240" y="263" text-anchor="middle" fill="#6B6860" font-size="12">No memory of previous calls</text>
+
+  <!-- Arrow -->
+  <line x1="240" y1="276" x2="240" y2="296" stroke="#D9D6CC" stroke-width="2"/>
+  <polygon points="233,290 240,302 247,290" fill="#D9D6CC"/>
+
+  <!-- Step 3 -->
+  <rect x="60" y="302" width="360" height="56" rx="10" fill="#FFFFFF" stroke="#E0DDD5" stroke-width="1.5"/>
+  <text x="240" y="327" text-anchor="middle" fill="#1A1816" font-size="13" font-weight="600">Response</text>
+  <text x="240" y="345" text-anchor="middle" fill="#6B6860" font-size="12">Context discarded after call</text>
+
+  <!-- Arrow (dashed = lost state) -->
+  <line x1="240" y1="358" x2="240" y2="378" stroke="#D9D6CC" stroke-width="2" stroke-dasharray="5,4"/>
+  <polygon points="233,372 240,384 247,372" fill="#D9D6CC"/>
+
+  <!-- Step 4 -->
+  <rect x="60" y="384" width="360" height="56" rx="10" fill="#FFFFFF" stroke="#E0DDD5" stroke-width="1.5"/>
+  <text x="240" y="409" text-anchor="middle" fill="#1A1816" font-size="13" font-weight="600">Next Request</text>
+  <text x="240" y="427" text-anchor="middle" fill="#9E9C96" font-size="12">No knowledge of previous step</text>
+
+  <!-- Verdict: stateless -->
+  <rect x="60" y="460" width="360" height="52" rx="10" fill="#FDF3EE" stroke="#EAC9B5" stroke-width="1.5"/>
+  <text x="240" y="483" text-anchor="middle" fill="#C97B52" font-size="13" font-weight="700">Fails at multi-step tasks</text>
+  <text x="240" y="501" text-anchor="middle" fill="#9E9C96" font-size="12">Works for Q&amp;A. Breaks for workflows.</text>
+
+  <!-- ── RIGHT: STATEFUL ── -->
+  <text x="720" y="105" text-anchor="middle" fill="#4A9B85" font-size="15" font-weight="700">Stateful</text>
+  <text x="720" y="122" text-anchor="middle" fill="#9E9C96" font-size="12">Context evolves across the trajectory</text>
+
+  <!-- Step 1 -->
+  <rect x="540" y="138" width="360" height="56" rx="10" fill="#FFFFFF" stroke="#C5D5EA" stroke-width="1.5"/>
+  <rect x="540" y="138" width="360" height="5" rx="5" fill="#5B8FC4"/>
+  <rect x="540" y="141" width="360" height="2" fill="#5B8FC4"/>
+  <text x="720" y="163" text-anchor="middle" fill="#1A1816" font-size="13" font-weight="600">User Request + Context Seed</text>
+  <text x="720" y="181" text-anchor="middle" fill="#6B6860" font-size="12">Task spec + retrieved memory + tools</text>
+
+  <!-- Arrow -->
+  <line x1="720" y1="194" x2="720" y2="214" stroke="#4A9B85" stroke-width="2"/>
+  <polygon points="713,208 720,220 727,208" fill="#4A9B85"/>
+
+  <!-- Step 2 -->
+  <rect x="540" y="220" width="360" height="56" rx="10" fill="#FFFFFF" stroke="#B8DCCF" stroke-width="1.5"/>
+  <rect x="540" y="220" width="360" height="5" rx="5" fill="#4A9B85"/>
+  <rect x="540" y="223" width="360" height="2" fill="#4A9B85"/>
+  <text x="720" y="245" text-anchor="middle" fill="#1A1816" font-size="13" font-weight="600">LLM Call + Tool Execution</text>
+  <text x="720" y="263" text-anchor="middle" fill="#6B6860" font-size="12">Results appended to running state</text>
+
+  <!-- Arrow -->
+  <line x1="720" y1="276" x2="720" y2="296" stroke="#4A9B85" stroke-width="2"/>
+  <polygon points="713,290 720,302 727,290" fill="#4A9B85"/>
+
+  <!-- Step 3 -->
+  <rect x="540" y="302" width="360" height="56" rx="10" fill="#FFFFFF" stroke="#CBBFE8" stroke-width="1.5"/>
+  <rect x="540" y="302" width="360" height="5" rx="5" fill="#8B6FBF"/>
+  <rect x="540" y="305" width="360" height="2" fill="#8B6FBF"/>
+  <text x="720" y="327" text-anchor="middle" fill="#1A1816" font-size="13" font-weight="600">State Update + Compression</text>
+  <text x="720" y="345" text-anchor="middle" fill="#6B6860" font-size="12">Prune noise, summarise history, re-rank</text>
+
+  <!-- Loop arrow back up (right side) -->
+  <path d="M900,340 Q930,340 930,310 Q930,160 900,160" fill="none" stroke="#4A9B85" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <polygon points="892,156 900,168 908,156" fill="#4A9B85"/>
+  <text x="945" y="258" text-anchor="middle" fill="#4A9B85" font-size="11" transform="rotate(90,945,258)">loop</text>
+
+  <!-- Arrow -->
+  <line x1="720" y1="358" x2="720" y2="378" stroke="#4A9B85" stroke-width="2"/>
+  <polygon points="713,372 720,384 727,372" fill="#4A9B85"/>
+
+  <!-- Step 4 -->
+  <rect x="540" y="384" width="360" height="56" rx="10" fill="#FFFFFF" stroke="#C5D5EA" stroke-width="1.5"/>
+  <rect x="540" y="384" width="360" height="5" rx="5" fill="#5B8FC4"/>
+  <rect x="540" y="387" width="360" height="2" fill="#5B8FC4"/>
+  <text x="720" y="409" text-anchor="middle" fill="#1A1816" font-size="13" font-weight="600">Next Step</text>
+  <text x="720" y="427" text-anchor="middle" fill="#6B6860" font-size="12">Context carries forward - curated</text>
+
+  <!-- Verdict: stateful -->
+  <rect x="540" y="460" width="360" height="52" rx="10" fill="#EEF7F4" stroke="#B8DCCF" stroke-width="1.5"/>
+  <text x="720" y="483" text-anchor="middle" fill="#4A9B85" font-size="13" font-weight="700">Handles long-horizon tasks</text>
+  <text x="720" y="501" text-anchor="middle" fill="#9E9C96" font-size="12">Requires: state store + compression + pruning</text>
+
+  <!-- Bottom note -->
+  <text x="480" y="545" text-anchor="middle" fill="#9E9C96" font-size="12">Stateful agents need a state store, a trajectory manager, and a compression policy - not just a longer context window</text>
+
+</svg>

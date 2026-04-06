@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 560" font-family="system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif">
+
+  <!-- Warm background -->
+  <rect width="960" height="560" fill="#F7F5EF" rx="0"/>
+
+  <!-- Title block -->
+  <text x="480" y="48" text-anchor="middle" fill="#1A1816" font-size="22" font-weight="700" letter-spacing="-0.3">What Fills the Context Window at Runtime</text>
+  <text x="480" y="72" text-anchor="middle" fill="#6B6860" font-size="14">Production agentic system - per inference call</text>
+
+  <!-- STATIC column label -->
+  <text x="148" y="108" text-anchor="middle" fill="#9E9C96" font-size="12" font-weight="600" letter-spacing="1.2">STATIC</text>
+
+  <!-- DYNAMIC column label -->
+  <text x="600" y="108" text-anchor="middle" fill="#9E9C96" font-size="12" font-weight="600" letter-spacing="1.2">DYNAMIC  ← the engineering surface</text>
+
+  <!-- Divider -->
+  <line x1="268" y1="96" x2="268" y2="440" stroke="#D9D6CC" stroke-width="1.5" stroke-dasharray="6,4"/>
+
+  <!-- ── STATIC BOXES ── -->
+
+  <!-- System Instructions -->
+  <rect x="32" y="120" width="216" height="90" rx="10" fill="#FFFFFF" stroke="#E0DDD5" stroke-width="1.5"/>
+  <rect x="32" y="120" width="216" height="6" rx="5" fill="#5B8FC4"/>
+  <rect x="32" y="124" width="216" height="2" fill="#5B8FC4"/>
+  <text x="140" y="154" text-anchor="middle" fill="#1A1816" font-size="13" font-weight="600">System Instructions</text>
+  <text x="140" y="172" text-anchor="middle" fill="#6B6860" font-size="12">Identity, rules, persona,</text>
+  <text x="140" y="188" text-anchor="middle" fill="#6B6860" font-size="12">safety guardrails</text>
+
+  <!-- Tool Definitions -->
+  <rect x="32" y="228" width="216" height="90" rx="10" fill="#FFFFFF" stroke="#E0DDD5" stroke-width="1.5"/>
+  <rect x="32" y="228" width="216" height="6" rx="5" fill="#5B8FC4"/>
+  <rect x="32" y="232" width="216" height="2" fill="#5B8FC4"/>
+  <text x="140" y="262" text-anchor="middle" fill="#1A1816" font-size="13" font-weight="600">Tool Definitions</text>
+  <text x="140" y="280" text-anchor="middle" fill="#6B6860" font-size="12">API schemas, function</text>
+  <text x="140" y="296" text-anchor="middle" fill="#6B6860" font-size="12">signatures &amp; constraints</text>
+
+  <!-- Static badge -->
+  <rect x="32" y="336" width="216" height="32" rx="8" fill="#EEF3FA" stroke="#C5D5EA" stroke-width="1"/>
+  <text x="140" y="357" text-anchor="middle" fill="#5B8FC4" font-size="12" font-weight="600">≈ 20% of context window</text>
+
+  <!-- ── DYNAMIC BOXES ── -->
+
+  <!-- Long-term Memory -->
+  <rect x="292" y="120" width="200" height="90" rx="10" fill="#FFFFFF" stroke="#E0DDD5" stroke-width="1.5"/>
+  <rect x="292" y="120" width="200" height="6" rx="5" fill="#4A9B85"/>
+  <rect x="292" y="124" width="200" height="2" fill="#4A9B85"/>
+  <text x="392" y="154" text-anchor="middle" fill="#1A1816" font-size="13" font-weight="600">Long-term Memory</text>
+  <text x="392" y="172" text-anchor="middle" fill="#6B6860" font-size="12">Vector DB retrieval,</text>
+  <text x="392" y="188" text-anchor="middle" fill="#6B6860" font-size="12">user prefs, past tasks</text>
+
+  <!-- Retrieved Documents -->
+  <rect x="508" y="120" width="200" height="90" rx="10" fill="#FFFFFF" stroke="#E0DDD5" stroke-width="1.5"/>
+  <rect x="508" y="120" width="200" height="6" rx="5" fill="#C97B52"/>
+  <rect x="508" y="124" width="200" height="2" fill="#C97B52"/>
+  <text x="608" y="154" text-anchor="middle" fill="#1A1816" font-size="13" font-weight="600">Retrieved Documents</text>
+  <text x="608" y="172" text-anchor="middle" fill="#6B6860" font-size="12">RAG chunks, knowledge</text>
+  <text x="608" y="188" text-anchor="middle" fill="#6B6860" font-size="12">base, policies</text>
+
+  <!-- Conversation + State -->
+  <rect x="724" y="120" width="204" height="90" rx="10" fill="#FFFFFF" stroke="#E0DDD5" stroke-width="1.5"/>
+  <rect x="724" y="120" width="204" height="6" rx="5" fill="#D45B7A"/>
+  <rect x="724" y="124" width="204" height="2" fill="#D45B7A"/>
+  <text x="826" y="154" text-anchor="middle" fill="#1A1816" font-size="13" font-weight="600">Conversation + State</text>
+  <text x="826" y="172" text-anchor="middle" fill="#6B6860" font-size="12">Chat history (compressed),</text>
+  <text x="826" y="188" text-anchor="middle" fill="#6B6860" font-size="12">task progress, scratchpad</text>
+
+  <!-- Task-Specific Injected Context (full width dynamic) -->
+  <rect x="292" y="228" width="636" height="90" rx="10" fill="#FFFFFF" stroke="#E0DDD5" stroke-width="1.5"/>
+  <rect x="292" y="228" width="636" height="6" rx="5" fill="#8B6FBF"/>
+  <rect x="292" y="232" width="636" height="2" fill="#8B6FBF"/>
+  <text x="610" y="262" text-anchor="middle" fill="#1A1816" font-size="13" font-weight="600">Task-Specific Injected Context</text>
+  <text x="610" y="280" text-anchor="middle" fill="#6B6860" font-size="12">Current user request + runtime data (git diff, DB row, API response, env flags)</text>
+  <text x="610" y="296" text-anchor="middle" fill="#9E9C96" font-size="11">Dynamically assembled per call by the harness</text>
+
+  <!-- Dynamic badge -->
+  <rect x="292" y="336" width="636" height="32" rx="8" fill="#F5EDF1" stroke="#DEC9D8" stroke-width="1"/>
+  <text x="610" y="357" text-anchor="middle" fill="#8B6FBF" font-size="12" font-weight="600">≈ 80% of context window - dynamically curated at inference time</text>
+
+  <!-- Quote box -->
+  <rect x="32" y="392" width="896" height="52" rx="10" fill="#FDFCF8" stroke="#E0DDD5" stroke-width="1.5"/>
+  <text x="480" y="415" text-anchor="middle" fill="#6B6860" font-size="12" font-style="italic">"That final prompt might be 80% dynamic content from there and 20% static instructions."</text>
+  <text x="480" y="433" text-anchor="middle" fill="#9E9C96" font-size="11">- IBM Technology, Context Engineering vs. Prompt Engineering</text>
+
+  <!-- Bottom note -->
+  <text x="480" y="480" text-anchor="middle" fill="#9E9C96" font-size="12">Context Engineering = the discipline of deciding what fills the dynamic 80% at every agent step</text>
+  <text x="480" y="498" text-anchor="middle" fill="#9E9C96" font-size="12">what to retrieve, compress, summarize, or discard</text>
+
+</svg>

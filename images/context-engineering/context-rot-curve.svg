@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 520" font-family="system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif">
+
+  <rect width="960" height="520" fill="#F7F5EF"/>
+
+  <!-- Title -->
+  <text x="480" y="48" text-anchor="middle" fill="#1A1816" font-size="22" font-weight="700" letter-spacing="-0.3">Context Rot: Performance vs. Context Volume</text>
+  <text x="480" y="72" text-anchor="middle" fill="#6B6860" font-size="14">The counterintuitive failure mode of large context windows</text>
+
+  <!-- Chart card -->
+  <rect x="80" y="90" width="800" height="340" rx="12" fill="#FFFFFF" stroke="#E0DDD5" stroke-width="1.5"/>
+
+  <!-- Grid lines -->
+  <line x1="160" y1="130" x2="820" y2="130" stroke="#F0EDE6" stroke-width="1"/>
+  <line x1="160" y1="185" x2="820" y2="185" stroke="#F0EDE6" stroke-width="1"/>
+  <line x1="160" y1="240" x2="820" y2="240" stroke="#F0EDE6" stroke-width="1"/>
+  <line x1="160" y1="295" x2="820" y2="295" stroke="#F0EDE6" stroke-width="1"/>
+  <line x1="160" y1="350" x2="820" y2="350" stroke="#F0EDE6" stroke-width="1"/>
+
+  <!-- Vertical grid lines -->
+  <line x1="325" y1="118" x2="325" y2="365" stroke="#F0EDE6" stroke-width="1"/>
+  <line x1="490" y1="118" x2="490" y2="365" stroke="#F0EDE6" stroke-width="1"/>
+  <line x1="655" y1="118" x2="655" y2="365" stroke="#F0EDE6" stroke-width="1"/>
+
+  <!-- Axes -->
+  <line x1="160" y1="365" x2="820" y2="365" stroke="#D9D6CC" stroke-width="2"/>
+  <line x1="160" y1="118" x2="160" y2="365" stroke="#D9D6CC" stroke-width="2"/>
+
+  <!-- X axis labels -->
+  <text x="160" y="385" text-anchor="middle" fill="#9E9C96" font-size="12">0%</text>
+  <text x="325" y="385" text-anchor="middle" fill="#9E9C96" font-size="12">25%</text>
+  <text x="490" y="385" text-anchor="middle" fill="#9E9C96" font-size="12">50%</text>
+  <text x="655" y="385" text-anchor="middle" fill="#9E9C96" font-size="12">75%</text>
+  <text x="820" y="385" text-anchor="middle" fill="#9E9C96" font-size="12">100%</text>
+  <text x="490" y="405" text-anchor="middle" fill="#9E9C96" font-size="12">Context Window Fill</text>
+
+  <!-- Y axis labels -->
+  <text x="150" y="132" text-anchor="end" fill="#9E9C96" font-size="12">High</text>
+  <text x="150" y="242" text-anchor="end" fill="#9E9C96" font-size="12">Med</text>
+  <text x="150" y="354" text-anchor="end" fill="#9E9C96" font-size="12">Low</text>
+  <text x="30" y="242" text-anchor="middle" fill="#9E9C96" font-size="12" transform="rotate(-90,30,242)">Output Quality</text>
+
+  <!-- Shaded rot zone -->
+  <path d="M490,172 C550,176 600,200 655,230 C710,260 760,295 820,320 L820,365 L490,365 Z" fill="#FDECEA" fill-opacity="0.6"/>
+
+  <!-- CURATED line (teal) -->
+  <path d="M160,355 C220,330 280,240 360,185 C420,155 480,140 540,138 C620,136 700,137 820,138"
+        fill="none" stroke="#4A9B85" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- UNCURATED line (orange-red) -->
+  <path d="M160,355 C220,328 280,238 360,183 C410,162 450,155 490,158 C530,162 570,182 620,215 C670,248 720,285 820,320"
+        fill="none" stroke="#C97B52" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Optimal zone annotation -->
+  <rect x="320" y="118" width="150" height="26" rx="6" fill="#EEF7F4" stroke="#B8DCCF" stroke-width="1"/>
+  <text x="395" y="135" text-anchor="middle" fill="#4A9B85" font-size="11" font-weight="600">optimal zone</text>
+
+  <!-- Rot onset marker -->
+  <line x1="490" y1="118" x2="490" y2="365" stroke="#C97B52" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <rect x="498" y="128" width="74" height="22" rx="5" fill="#FAF0EA" stroke="#E8C5AA" stroke-width="1"/>
+  <text x="535" y="143" text-anchor="middle" fill="#C97B52" font-size="11" font-weight="600">rot onset</text>
+
+  <!-- Dot on curated peak -->
+  <circle cx="490" cy="156" r="5" fill="#FFFFFF" stroke="#4A9B85" stroke-width="2.5"/>
+
+  <!-- Dot on uncurated peak -->
+  <circle cx="420" cy="153" r="5" fill="#FFFFFF" stroke="#C97B52" stroke-width="2.5"/>
+
+  <!-- Legend -->
+  <line x1="100" y1="455" x2="136" y2="455" stroke="#4A9B85" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="118" cy="455" r="4" fill="#FFFFFF" stroke="#4A9B85" stroke-width="2.5"/>
+  <text x="144" y="459" fill="#1A1816" font-size="13">Curated context - active retrieval scoring, compression, pruning</text>
+
+  <line x1="100" y1="478" x2="136" y2="478" stroke="#C97B52" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="118" cy="478" r="4" fill="#FFFFFF" stroke="#C97B52" stroke-width="2.5"/>
+  <text x="144" y="482" fill="#1A1816" font-size="13">Uncurated context - append-only, noise accumulates</text>
+
+</svg>

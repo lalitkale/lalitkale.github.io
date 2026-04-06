@@ -1,0 +1,265 @@
+<!DOCTYPE html><html lang="en" data-astro-cid-dmqsi53g> <head><script>
+      (function() {
+        const stored = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (stored === 'dark' || (!stored && prefersDark)) {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>The Current State of Context Management for Agentic Systems — ATechieThought Labs</title><meta name="description" content="A deep technical look at how context engineering has become the core discipline of production AI, covering memory architecture, context rot, stateful agents, and the harness patterns that actually work at enterprise scale."><link rel="canonical" href="https://lalitkale.com/posts/context-management-agentic-systems/"><!-- Open Graph --><meta property="og:type" content="article"><meta property="og:title" content="The Current State of Context Management for Agentic Systems — ATechieThought Labs"><meta property="og:description" content="A deep technical look at how context engineering has become the core discipline of production AI, covering memory architecture, context rot, stateful agents, and the harness patterns that actually work at enterprise scale."><meta property="og:url" content="https://lalitkale.com/posts/context-management-agentic-systems/"><meta property="og:site_name" content="ATechieThought Labs"><!-- Twitter --><meta name="twitter:card" content="summary"><meta name="twitter:title" content="The Current State of Context Management for Agentic Systems — ATechieThought Labs"><meta name="twitter:description" content="A deep technical look at how context engineering has become the core discipline of production AI, covering memory architecture, context rot, stateful agents, and the harness patterns that actually work at enterprise scale."><!-- JSON-LD --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"BlogPosting","headline":"The Current State of Context Management for Agentic Systems","description":"A deep technical look at how context engineering has become the core discipline of production AI, covering memory architecture, context rot, stateful agents, and the harness patterns that actually work at enterprise scale.","datePublished":"2026-04-06T00:00:00.000Z","url":"https://lalitkale.com/posts/context-management-agentic-systems","mainEntityOfPage":{"@type":"WebPage","@id":"https://lalitkale.com/posts/context-management-agentic-systems"},"author":{"@type":"Person","name":"Lalit Kale"},"publisher":{"@type":"Organization","name":"ATechieThought Labs","url":"https://lalitkale.github.io"}},{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://lalitkale.com/"},{"@type":"ListItem","position":2,"name":"Posts","item":"https://lalitkale.com/posts/"},{"@type":"ListItem","position":3,"name":"The Current State of Context Management for Agentic Systems","item":"https://lalitkale.com/posts/context-management-agentic-systems"}]}]</script><link rel="alternate" type="application/rss+xml" title="ATechieThought Labs" href="/rss.xml"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,ital,wght@8..60,0,400;8..60,0,600;8..60,0,700;8..60,1,400&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"><script defer src="https://cloud.umami.is/script.js" data-website-id="050a7fdf-1139-437e-8a35-8f80160bd07d"></script><style>.nav[data-astro-cid-dmqpwcec]{display:flex;justify-content:space-between;align-items:baseline;padding:var(--space-lg) 0;border-bottom:1px solid var(--color-border);margin-bottom:var(--space-2xl)}.nav-brand[data-astro-cid-dmqpwcec]{font-family:var(--font-heading);font-size:.875rem;font-weight:600;letter-spacing:-.01em;text-decoration:none;color:var(--color-text)}.nav-brand[data-astro-cid-dmqpwcec]:hover{color:var(--color-text-secondary)}.nav-links[data-astro-cid-dmqpwcec]{display:flex;gap:var(--space-lg)}.nav-links[data-astro-cid-dmqpwcec] a[data-astro-cid-dmqpwcec]{font-family:var(--font-heading);font-size:.8125rem;color:var(--color-text-secondary);text-decoration:none}.nav-links[data-astro-cid-dmqpwcec] a[data-astro-cid-dmqpwcec]:hover,.nav-links[data-astro-cid-dmqpwcec] a[data-astro-cid-dmqpwcec].active{color:var(--color-text)}.nav-actions[data-astro-cid-dmqpwcec]{display:flex;align-items:center;gap:var(--space-md);margin-left:var(--space-md)}.search-link[data-astro-cid-dmqpwcec]{display:flex;align-items:center;color:var(--color-text-secondary);text-decoration:none}.search-link[data-astro-cid-dmqpwcec]:hover,.search-link[data-astro-cid-dmqpwcec].active{color:var(--color-text)}.theme-toggle[data-astro-cid-dmqpwcec]{background:none;border:none;cursor:pointer;padding:0;color:var(--color-text-secondary);display:flex;align-items:center;line-height:1}.theme-toggle[data-astro-cid-dmqpwcec]:hover{color:var(--color-text)}.icon-sun[data-astro-cid-dmqpwcec]{display:none}.icon-moon[data-astro-cid-dmqpwcec],html.dark .icon-sun[data-astro-cid-dmqpwcec]{display:block}html.dark .icon-moon[data-astro-cid-dmqpwcec]{display:none}.footer[data-astro-cid-sz7xmlte]{margin-top:var(--space-2xl);padding:var(--space-lg) 0;border-top:1px solid var(--color-border)}.footer[data-astro-cid-sz7xmlte] p[data-astro-cid-sz7xmlte]{font-family:var(--font-heading);font-size:.75rem;color:var(--color-text-tertiary)}.footer[data-astro-cid-sz7xmlte] a[data-astro-cid-sz7xmlte]{color:var(--color-text-tertiary)}.footer[data-astro-cid-sz7xmlte] a[data-astro-cid-sz7xmlte]:hover{color:var(--color-text-secondary)}:root{--font-body: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;--font-heading: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;--font-serif: "Source Serif 4", Georgia, "Times New Roman", serif;--font-mono: "JetBrains Mono", "Fira Code", Consolas, monospace;--color-text: #1a1a1a;--color-text-secondary: #4a4a4a;--color-text-tertiary: #717171;--color-bg: #fafaf7;--color-surface: #ffffff;--color-border: #e2e0d8;--color-link: #1a1a1a;--color-link-hover: #4a4a4a;--color-code-bg: #f1efe8;--width-content: 640px;--width-page: 720px;--space-xs: .25rem;--space-sm: .5rem;--space-md: 1rem;--space-lg: 2rem;--space-xl: 3rem;--space-2xl: 5rem}*,*:before,*:after{margin:0;padding:0;box-sizing:border-box}html{font-size:18px;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility}body{font-family:var(--font-body);color:var(--color-text);background-color:var(--color-bg);line-height:1.7;transition:background-color .2s ease,color .2s ease}a{color:var(--color-link);text-decoration-thickness:1px;text-underline-offset:2px;transition:color .15s ease}a:hover{color:var(--color-link-hover)}img{max-width:100%;height:auto;display:block}::selection{background-color:#d4d4d0}html.dark{--color-text: #e8e6e1;--color-text-secondary: #a8a49e;--color-text-tertiary: #706c66;--color-bg: #1a1917;--color-surface: #221f1c;--color-border: #2e2b27;--color-link: #e8e6e1;--color-link-hover: #a8a49e;--color-code-bg: #252220}html.dark ::selection{background-color:#3a3733}.page[data-astro-cid-dmqsi53g]{max-width:var(--width-page);margin:0 auto;padding:0 var(--space-lg);min-height:100vh;display:flex;flex-direction:column}main[data-astro-cid-dmqsi53g]{flex:1}
+.heading[data-astro-cid-u4qoyrkz]{font-family:var(--font-serif);color:var(--color-text);letter-spacing:-.02em;line-height:1.2}.heading-h1[data-astro-cid-u4qoyrkz]{font-size:2rem;font-weight:700;margin-bottom:var(--space-md)}.heading-h2[data-astro-cid-u4qoyrkz]{font-size:1.375rem;font-weight:600;margin-top:var(--space-xl);margin-bottom:var(--space-sm)}.heading-h3[data-astro-cid-u4qoyrkz]{font-size:1.125rem;font-weight:600;margin-top:var(--space-lg);margin-bottom:var(--space-sm)}
+.prose[data-astro-cid-apjhz64k]{font-family:var(--font-body);font-size:1rem;line-height:1.75;color:var(--color-text)}.prose[data-astro-cid-apjhz64k] p{margin-bottom:1.5em}.prose[data-astro-cid-apjhz64k] h2{font-family:var(--font-serif);font-size:1.375rem;font-weight:600;letter-spacing:-.02em;line-height:1.3;margin-top:2.5em;margin-bottom:.75em;padding-bottom:.5em;border-bottom:1px solid var(--color-border);color:var(--color-text)}.prose[data-astro-cid-apjhz64k] h3{font-family:var(--font-heading);font-size:1rem;font-weight:600;letter-spacing:-.01em;line-height:1.4;margin-top:1.75em;margin-bottom:.5em;color:var(--color-text)}.prose[data-astro-cid-apjhz64k] a{color:var(--color-link);text-decoration-thickness:1px;text-underline-offset:2px}.prose[data-astro-cid-apjhz64k] a:hover{color:var(--color-link-hover)}.prose[data-astro-cid-apjhz64k] blockquote{border-left:2px solid var(--color-border);padding-left:var(--space-lg);margin:1.5em 0;color:var(--color-text-secondary);font-style:italic}.prose[data-astro-cid-apjhz64k] ul,.prose[data-astro-cid-apjhz64k] ol{margin-bottom:1.5em;padding-left:1.5em}.prose[data-astro-cid-apjhz64k] li{margin-bottom:.375em}.prose[data-astro-cid-apjhz64k] code{font-family:var(--font-mono);font-size:.85em;background-color:var(--color-code-bg);padding:.125em .375em;border-radius:3px}.prose[data-astro-cid-apjhz64k] pre{background-color:var(--color-code-bg);padding:var(--space-lg);border-radius:4px;overflow-x:auto;margin:1.5em 0;line-height:1.5}.prose[data-astro-cid-apjhz64k] pre code{background:none;padding:0;font-size:.8125rem}.prose[data-astro-cid-apjhz64k] hr{border:none;border-top:1px solid var(--color-border);margin:2.5em 0}.prose[data-astro-cid-apjhz64k] img{border-radius:4px;margin:1.5em 0}.prose[data-astro-cid-apjhz64k] strong{font-weight:600}.tag-list[data-astro-cid-lga65v7i]{display:flex;flex-wrap:wrap;gap:var(--space-xs);margin-top:var(--space-sm)}.tag[data-astro-cid-lga65v7i]{font-family:var(--font-heading);font-size:.75rem;color:var(--color-text-secondary);text-decoration:none;border:1px solid var(--color-border);padding:.125rem .5rem;border-radius:3px;transition:color .15s ease,border-color .15s ease}.tag[data-astro-cid-lga65v7i]:hover{color:var(--color-text);border-color:var(--color-text-secondary)}.series-badge[data-astro-cid-u54u4p2g]{font-family:var(--font-heading);font-size:.8125rem;color:var(--color-text-secondary);border-left:3px solid var(--color-border);padding-left:var(--space-sm);margin-top:var(--space-sm)}.series-badge[data-astro-cid-u54u4p2g] a[data-astro-cid-u54u4p2g]{color:var(--color-text);text-decoration:underline;text-underline-offset:2px}.series-badge[data-astro-cid-u54u4p2g] a[data-astro-cid-u54u4p2g]:hover{color:var(--color-text-secondary)}.author-card[data-astro-cid-32rj7774]{display:flex;align-items:center;gap:var(--space-sm);margin-top:var(--space-sm)}.author-avatar[data-astro-cid-32rj7774]{width:1.75rem;height:1.75rem;border-radius:50%;object-fit:cover}.author-name[data-astro-cid-32rj7774]{font-family:var(--font-heading);font-size:.8125rem;color:var(--color-text-secondary)}.giscus-container[data-astro-cid-an2nl7ar]{margin-top:var(--space-2xl)}.article[data-astro-cid-q7kxohas]{max-width:var(--width-content)}.article-header[data-astro-cid-q7kxohas]{margin-bottom:var(--space-xl)}.article-meta[data-astro-cid-q7kxohas]{font-family:var(--font-mono);font-size:.6875rem;text-transform:uppercase;letter-spacing:.05em;color:var(--color-text-tertiary);margin-top:var(--space-sm);display:flex;flex-direction:column;gap:var(--space-xs)}.mermaid-diagram{margin:1.5em 0;overflow-x:auto}.mermaid-diagram svg{max-width:100%;height:auto;display:block;margin:0 auto}
+.subscribe-section{margin-top:var(--space-2xl)}
+</style></head> <body data-astro-cid-dmqsi53g> <div class="page" data-astro-cid-dmqsi53g> <nav class="nav" data-astro-cid-dmqpwcec> <a href="/" class="nav-brand" data-astro-cid-dmqpwcec>ATechieThought Labs</a> <div class="nav-links" data-astro-cid-dmqpwcec> <a href="/microposts" data-astro-cid-dmqpwcec>Microposts</a> <a href="/series" data-astro-cid-dmqpwcec>Series</a> <a href="/talks" data-astro-cid-dmqpwcec>Talks</a> <a href="/about" data-astro-cid-dmqpwcec>About</a> <a href="/rss.xml" data-astro-cid-dmqpwcec>RSS</a> </div> <div class="nav-actions" data-astro-cid-dmqpwcec> <a href="/search" class="search-link" aria-label="Search" data-astro-cid-dmqpwcec> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-astro-cid-dmqpwcec> <circle cx="11" cy="11" r="8" data-astro-cid-dmqpwcec></circle> <line x1="21" y1="21" x2="16.65" y2="16.65" data-astro-cid-dmqpwcec></line> </svg> </a> <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" data-astro-cid-dmqpwcec> <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-dmqpwcec> <circle cx="12" cy="12" r="5" data-astro-cid-dmqpwcec></circle> <line x1="12" y1="1" x2="12" y2="3" data-astro-cid-dmqpwcec></line> <line x1="12" y1="21" x2="12" y2="23" data-astro-cid-dmqpwcec></line> <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" data-astro-cid-dmqpwcec></line> <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" data-astro-cid-dmqpwcec></line> <line x1="1" y1="12" x2="3" y2="12" data-astro-cid-dmqpwcec></line> <line x1="21" y1="12" x2="23" y2="12" data-astro-cid-dmqpwcec></line> <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" data-astro-cid-dmqpwcec></line> <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" data-astro-cid-dmqpwcec></line> </svg> <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-dmqpwcec> <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" data-astro-cid-dmqpwcec></path> </svg> </button> </div> </nav> <script type="module">const t=document.getElementById("theme-toggle");t?.addEventListener("click",()=>{const e=document.documentElement.classList.toggle("dark");localStorage.setItem("theme",e?"dark":"light")});</script>  <main data-astro-cid-dmqsi53g>   <article class="article" data-astro-cid-q7kxohas> <header class="article-header" data-astro-cid-q7kxohas> <h1 data-astro-cid-u4qoyrkz="true" class="heading heading-h1"> The Current State of Context Management for Agentic Systems </h1>  <div class="article-meta" data-astro-cid-q7kxohas> <time datetime="2026-04-06T00:00:00.000Z" data-astro-cid-q7kxohas>April 6, 2026</time> <div class="author-card" data-astro-cid-32rj7774> <img src="/images/Lalit_Kale.jpg" alt="Lalit Kale" class="author-avatar" data-astro-cid-32rj7774> <span class="author-name" data-astro-cid-32rj7774>Lalit Kale</span> </div>   <div class="tag-list" data-astro-cid-lga65v7i><a href="/tags/ai/" class="tag" data-astro-cid-lga65v7i>ai</a><a href="/tags/llm/" class="tag" data-astro-cid-lga65v7i>llm</a><a href="/tags/agents/" class="tag" data-astro-cid-lga65v7i>agents</a><a href="/tags/architecture/" class="tag" data-astro-cid-lga65v7i>architecture</a><a href="/tags/context-engineering/" class="tag" data-astro-cid-lga65v7i>context-engineering</a></div> </div> </header> <div class="prose" data-astro-cid-apjhz64k>   <p>The context window is the only world your agent lives in.</p>
+<p>It can’t look outside it. It can’t remember what happened two calls ago unless you explicitly put that information back in. It has no persistent self. It is, in the most literal sense, a stateless function: tokens in, tokens out.</p>
+<p>This is the constraint that defines everything in agentic AI engineering. And in 2026, the practitioners who are building reliable production systems have stopped treating it as a nuisance and started treating it as the primary engineering surface.</p>
+<p>They call it <strong>context engineering</strong>. The name is disputed - half of <a href="https://www.reddit.com/r/aiagents/comments/1rx545o/context_engineering_is_the_new_buzzword_but/">r/aiagents</a> will tell you it’s a buzzword. They’re wrong and right at the same time.</p>
+<hr>
+<h2 id="why-prompt-engineering-was-always-a-partial-answer">Why Prompt Engineering Was Always a Partial Answer</h2>
+<p>When GPT-3 landed in 2020, the skill that emerged was prompt engineering: the art of crafting text inputs that coax better outputs from a model. Chain-of-thought. Role assignment. Few-shot examples. Constraint setting. These are real techniques. They still work.</p>
+<p>But they were always working around a deeper problem.</p>
+<p>Andrej Karpathy, who has been thinking about this longer than most, <a href="https://x.com/karpathy/status/2035174102974308666">put it plainly in March 2026</a>:</p>
+<blockquote>
+<p><em>“It’s not really about ‘prompting’, it’s about context and spec engineering, and then all of the other harness tools.”</em></p>
+</blockquote>
+<p>The distinction matters. Prompt engineering asks: <strong>what is the best way to phrase this instruction?</strong> Context engineering asks: <strong>what does this model need to know, in what form, assembled how, to have any chance of doing this task correctly?</strong></p>
+<p>The Paris hotel example from <a href="https://www.youtube.com/watch?v=vD0E3EUb8-8">IBM Technology’s widely-watched explainer video</a> is instructive. An agent booked a hotel in Paris, Kentucky instead of Paris, France. You could frame that as a prompting failure - the instruction wasn’t specific enough. But it’s more accurately a context failure: the agent didn’t have access to the user’s calendar, didn’t have a tool to verify the conference location, and didn’t have the travel policy that would have bounded its choices. Better wording would not have fixed this. Better context architecture would have.</p>
+<p><a href="https://www.youtube.com/watch?v=vD0E3EUb8-8">IBM Technology’s transcript</a> cuts to the core:</p>
+<blockquote>
+<p><em>“Prompt engineering gives you better questions. Context engineering gives you better systems.”</em></p>
+</blockquote>
+<hr>
+<h2 id="the-anatomy-of-what-the-model-actually-sees">The Anatomy of What the Model Actually Sees</h2>
+<p>When a production agent makes an inference call, the context window is not a blank slate filled with your prompt. It is an assembled artifact, and at scale, most of it is dynamic.</p>
+<p><img src="/images/context-engineering/context-window-anatomy.svg" alt="Context Window Anatomy"></p>
+<p>IBM Technology’s benchmark holds: roughly <strong>20% of the context is static</strong> (system instructions, tool definitions, identity and safety guardrails), and <strong>80% is dynamically assembled at runtime</strong>. That runtime assembly includes retrieved documents from vector stores, compressed conversation history, agent scratchpad and task state, current tool outputs, and the injected task-specific data that makes this call different from the last one.</p>
+<p>The critical insight is that the 80% is the engineering problem. Static instructions are a one-time design decision. The dynamic 80% is what changes with every call, every user, every task state. Every decision about what to retrieve, how to compress conversation history, when to prune tool outputs - those are architectural decisions with direct, measurable impact on output quality.</p>
+<p>This is why the <a href="https://www.reddit.com/r/LocalLLaMA/comments/1o759mr/context_engineering_information_architecture_for/">r/LocalLLaMA community thread titled “Context Engineering = Information Architecture for LLMs”</a> has held up as one of the most shared framings. It’s not wrong. Designing what goes in the context window is structurally similar to designing a database schema: the decisions you make upfront determine what queries (inferences) are possible and how expensive they are.</p>
+<hr>
+<h2 id="the-four-components-of-runtime-context">The Four Components of Runtime Context</h2>
+<p>Before you can manage context well, you have to know what you’re managing. Production agents pull from four sources at inference time:</p>
+<p><strong>1. Memory (retrieved from storage)</strong><br>
+Past interactions, user preferences, domain knowledge. Retrieved via vector search, not loaded wholesale. The retrieval decision - what to retrieve and how many chunks - is one of the highest-leverage decisions in context engineering.</p>
+<p><strong>2. State (agent’s working memory)</strong><br>
+Where the agent is in a multi-step process. Did the database query succeed? What was the result? What was the user’s clarification in turn 3? This is the part that breaks most often in stateless implementations and the part that requires a real state store in production.</p>
+<p><strong>3. Tools (available capabilities)</strong><br>
+Not just function definitions but the full interface design: what each tool does, when to use it, what inputs it expects, what constraints apply. Tool descriptions are context. Poorly written tool descriptions are context rot waiting to happen.</p>
+<p><strong>4. History (compressed conversation)</strong><br>
+In short interactions, you can fit the full conversation. In long agentic workflows - a code review agent that has made 40 tool calls over 20 minutes - you cannot. You need a compression strategy: summarize older turns, keep recent ones verbatim, remember critical decisions explicitly.</p>
+<p>The architectural question is not whether to have these four sources. It’s how to budget the context window across them at runtime, and how to keep each source clean.</p>
+<hr>
+<h2 id="context-rot-the-quiet-failure-mode">Context Rot: The Quiet Failure Mode</h2>
+<p>Here is the counterintuitive failure mode that trips up large enterprises most often.</p>
+<p>You assume that more context means better performance. You have a 1 million token window. Fill it with everything: every tool call output, every past interaction, every retrieved document, every intermediate reasoning step. The model has everything it needs.</p>
+<p>The output gets worse.</p>
+<p>This is <strong>context rot</strong>, and it’s now recognized as one of the fundamental challenges in production LLM systems. <a href="https://weaviate.io/blog/context-engineering">Weaviate’s engineering team</a> describes it directly:</p>
+<blockquote>
+<p><em>Context rot degrades model performance as context windows grow with poorly curated information.</em></p>
+</blockquote>
+<p>The mechanism is attention dilution. Language models attend to tokens, and attention is not uniform - proximity matters, relevance signals matter, and noise tokens compete for attention budget with signal tokens. A 1M token window stuffed with low-relevance content is not a 1M token advantage; it’s a handicap.</p>
+<p><img src="/images/context-engineering/context-rot-curve.svg" alt="Context Rot Curve"></p>
+<p><em>The curve above is illustrative, derived from patterns documented in Liu et al. <a href="https://arxiv.org/abs/2307.03172">“Lost in the Middle: How Language Models Use Long Contexts” (2023)</a> - which demonstrated empirically that retrieval accuracy degrades when relevant content is in the middle of a long context, not at the edges - combined with Weaviate’s context engineering analysis and practitioner benchmarking from r/LocalLLaMA. The specific “rot onset” threshold varies by model and task; the structural shape holds consistently: uncurated append-only context degrades faster and peaks earlier than curated context.</em></p>
+<p>The curve has a peak. Before the peak, adding context improves output quality - you’re giving the model what it needs. After the peak, you’re adding noise that crowds out signal. The engineering work is to stay in the high-quality zone: aggressive curation, relevance scoring, and pruning.</p>
+<p>This is why context engineering is closer to data engineering than to prompt writing. You are building a pipeline that ensures only high-signal tokens reach the model at each step. The discipline looks like:</p>
+<ul>
+<li><strong>Retrieval scoring</strong>: don’t retrieve the top-k chunks blindly; score for relevance to the current task state</li>
+<li><strong>History compression</strong>: summarize old turns rather than appending indefinitely</li>
+<li><strong>Tool output filtering</strong>: extract only the fields the model needs from API responses; don’t dump the full JSON</li>
+<li><strong>Deduplication</strong>: the same document retrieved twice is noise, not reinforcement</li>
+</ul>
+<p>The r/LocalLLaMA community has been building this discipline empirically. <a href="https://www.reddit.com/r/LocalLLaMA/comments/1qg4d4t/what_we_learned_processing_1m_emails_for_context/">One team reported processing 1M+ emails for a context engineering pipeline</a> and found that naive retrieval consistently hurt results; section-level retrieval with relevance thresholds was the fix.</p>
+<hr>
+<h2 id="memory-architecture-three-tiers">Memory Architecture: Three Tiers</h2>
+<p>Enterprise agentic systems that survive production have converged on a three-tier memory architecture. The inspiration from cognitive science is not accidental - the constraints are structurally similar.</p>
+<p><img src="/images/context-engineering/memory-architecture.svg" alt="Memory Architecture"></p>
+<p><strong>Tier 1: Working Memory (in-context)</strong><br>
+What the model sees right now. Fastest, scarcest. The constraint is the context window size. Managing this tier is about real-time curation: every token that goes in should earn its place.</p>
+<p><strong>Tier 2: Episodic / Short-term Memory</strong><br>
+The session state. Compressed conversation history, task checkpoints, intermediate outputs. Stored in Redis or a fast key-value store. This is where you implement <strong>rolling window compression</strong>: keep the last N turns verbatim, summarize everything before that into a compact representation, and explicitly save critical facts (user decisions, error states, confirmed data) as structured notes rather than relying on the summary.</p>
+<p><strong>Tier 3: Semantic / Long-term Memory</strong><br>
+The persistent knowledge base. Vector embeddings of past interactions, user preferences, domain knowledge. Retrieved via hybrid semantic + keyword search. This is what makes an agent feel like it “remembers” you across sessions - but the implementation is retrieval, not actual memory.</p>
+<p>The engineering challenge is the bridge: <strong>RAG retrieval moves Tier 3 to Tier 1</strong>, and every retrieval call is a context budget decision. How you chunk documents, what embedding model you use, how you rank retrieved candidates, and how many tokens you’re willing to spend per retrieval - these are the decisions that determine whether your agent is accurate or not.</p>
+<p>The <a href="https://www.reddit.com/r/LocalLLaMA/comments/1qdtwfs/does_context_engineering_rag_actually_make_reduce/">r/LocalLLaMA thread “Does Context Engineering (RAG) actually reduce hallucinations?”</a> has a clear practitioner consensus: yes, but only if retrieval is good. Bad RAG - returning long, low-relevance chunks - can increase hallucinations by flooding the context with authoritative-sounding but irrelevant content.</p>
+<hr>
+<h2 id="the-stateless-default-a-multi-step-liability">The Stateless Default: A Multi-Step Liability</h2>
+<p>This is the one that costs teams the most time.</p>
+<p>Most tutorials and demos build stateless agents: each LLM call is independent. The system prompt is static. User message comes in, response goes out. Clean, simple, fast to build.</p>
+<p>It works until the agent needs to do anything that takes more than one step.</p>
+<p>Consider a real enterprise use case: a code review agent that (1) reads the diff, (2) queries the internal style guide, (3) runs a security check tool, (4) retrieves relevant past PR decisions, and (5) writes the review. Five steps. In a stateless design, by the time you’re at step 4, the agent may have no access to what the security check from step 3 returned unless you explicitly passed it forward. By step 5, if the context is near the limit, early tool outputs may be truncated.</p>
+<p><img src="/images/context-engineering/stateless-vs-stateful.svg" alt="Stateless vs Stateful"></p>
+<p><a href="https://x.com/MunshiPremChnd/status/2041109853674885129">The Adi Polak podcast that circulated widely on X this week</a> framed it clearly: stateless prompt tricks fall short for agentic work because agents need <strong>stateful context management</strong> - the context window must carry forward what matters and discard what doesn’t, across the entire task trajectory.</p>
+<p>The fix requires actual infrastructure: a state store, a compression strategy, and a clear policy for what gets carried forward versus dropped. Specifically:</p>
+<ul>
+<li><strong>State store</strong>: persist agent state externally (task progress, tool outputs, user decisions) so it survives across LLM calls and can be retrieved selectively</li>
+<li><strong>Trajectory management</strong>: treat the sequence of agent steps as a first-class object; the context at step N is a function of what happened at steps 1..N-1, curated</li>
+<li><strong>Checkpointing</strong>: for long-running tasks, snapshot state periodically; this enables retries and debugging without full replay</li>
+</ul>
+<p><a href="https://x.com/arfujeddy14/status/2041157680480289159">@arfujeddy14 articulated the practitioner shift on X this week</a>:</p>
+<blockquote>
+<p><em>“Power users stopped obsessing over prompt templates. They feed rich context first — notes, goals, constraints — and let the model reason. The AI suddenly stops guessing and starts executing.”</em></p>
+</blockquote>
+<p>The language is informal but the insight is correct. When context is rich, specific, and well-structured, the model doesn’t need clever prompting - the signal is high enough that it reasons correctly. When context is thin or poorly curated, no amount of prompt engineering compensates.</p>
+<hr>
+<h2 id="the-harness-context-engineering-as-systems-engineering">The Harness: Context Engineering as Systems Engineering</h2>
+<p>At scale, context engineering becomes <strong>harness engineering</strong> - the design of the system that assembles, manages, and curates the context at runtime.</p>
+<p><a href="https://x.com/LiorPollak/status/2041121114517041475">@LiorPollak’s observation from April 2026</a> is worth quoting directly:</p>
+<blockquote>
+<p><em>“Claude Code doesn’t use a static system prompt, it dynamically assembles one with conditional blocks for identity, rules, tools, safety, Git context, and user flags. This is fine context engineering in practice.”</em></p>
+</blockquote>
+<p>The leaked Claude Code source code confirms this claim is accurate. <code>constants/prompts.ts</code> exposes an async <code>getSystemPrompt()</code> function (line 444) that assembles an array of named sections at runtime. There is an explicit <code>SYSTEM_PROMPT_DYNAMIC_BOUNDARY</code> string constant (line 114) separating the static prefix - globally cacheable across API requests - from dynamic sections managed by a <code>systemPromptSection()</code> registry with per-section memoization. Sections re-evaluate on <code>/clear</code> and <code>/compact</code>; the sole exception is MCP server instructions, which use <code>DANGEROUS_uncachedSystemPromptSection()</code> because MCP servers connect and disconnect mid-session.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Claimed block</th><th>Source function (<code>constants/prompts.ts</code>)</th><th>Nature</th></tr></thead><tbody><tr><td>Identity</td><td><code>getSimpleIntroSection()</code></td><td>Static, cached globally</td></tr><tr><td>Rules</td><td><code>getSimpleDoingTasksSection()</code></td><td>Static, with <code>USER_TYPE</code> conditionals</td></tr><tr><td>Tools</td><td><code>getUsingYourToolsSection(enabledTools)</code></td><td>Conditional on active tool set</td></tr><tr><td>Safety</td><td><code>getActionsSection()</code></td><td>Static</td></tr><tr><td>Git context</td><td><code>computeSimpleEnvInfo()</code> - calls <code>getIsGit()</code> + worktree check</td><td>Dynamic, memoized</td></tr><tr><td>User flags</td><td><code>getLanguageSection()</code>, <code>getOutputStyleConfig()</code>, <code>getSessionSpecificGuidanceSection()</code></td><td>Dynamic, memoized</td></tr></tbody></table>
+<p>This is what a harness looks like. Not a static string. A programmatic assembler that reads runtime conditions - what git branch are we on, what tool is the user using, what flags are set, what is the current task - and constructs the appropriate context for this specific inference call.</p>
+<p>The harness has several responsibilities:</p>
+<p><strong>Context assembly</strong>: pull from all four sources (memory, state, tools, history), score for relevance, budget against the context limit, and assemble in the right order. Order matters - the model attends more to content near the end of the prompt. Put the most task-critical context closest to the generation point.</p>
+<p><strong>Tool interface design</strong>: tool descriptions are context. A well-written tool description tells the model what the tool does, when to use it, what inputs are valid, and what constraints apply. A poor tool description produces tool misuse. This is the most underappreciated part of context engineering in enterprise deployments - teams spend weeks on the model and minutes on tool interfaces.</p>
+<p><strong>State persistence and retrieval</strong>: the harness owns the state store. It decides what to persist after each agent step, what to retrieve at the start of each step, and how to compress history over time.</p>
+<p><strong>Context observability</strong>: you cannot debug a context you cannot inspect. The harness should log the full assembled context for every LLM call (or a sample thereof) so that when the agent produces wrong output, you can look at exactly what it saw. This is the distributed tracing problem for AI - without it, debugging is guesswork.</p>
+<hr>
+<h2 id="mcp-the-integration-layer-that-changes-the-harness">MCP: The Integration Layer That Changes the Harness</h2>
+<p>The <a href="https://docs.langchain.com/oss/python/langchain/context-engineering">Model Context Protocol</a>, now governed by the Agentic AI Foundation under the Linux Foundation, has become the universal standard for connecting agents to external tools and data sources. 97M+ monthly SDK downloads. Adopted by Anthropic, OpenAI, Google, Microsoft.</p>
+<p>MCP matters for context engineering specifically because it standardizes <strong>how tools surface to the harness</strong>. Without MCP, every integration is bespoke: custom tool schemas, custom authentication, custom output formats. With MCP, tools expose a standardized interface that the harness can discover, invoke, and consume uniformly.</p>
+<p>The harness doesn’t need to know whether a tool is a REST API, a database query, or a local function - it speaks MCP and the tool adapter handles the translation. This separation of concerns is what makes context engineering composable at enterprise scale.</p>
+<p>What MCP doesn’t solve is context budgeting. That’s still on the harness. MCP tells you how to invoke tools; it doesn’t tell you how many tool calls to make, which results to keep in context, or how to compress tool output history. Those decisions remain the core engineering problem.</p>
+<p>The 2026 emerging pattern: <strong><a href="https://www.llamaindex.ai/blog/context-engineering-what-it-is-and-techniques-to-consider">LlamaIndex</a> for data structuring (retrieval, chunking, embeddings) + <a href="https://blog.langchain.com/context-engineering-for-agents/">LangGraph</a> for agent orchestration + MCP for tool integration</strong>. This is the stack that appears most consistently across production engineering posts.</p>
+<hr>
+<h2 id="what-production-looks-like-evidence-from-the-field">What Production Looks Like: Evidence from the Field</h2>
+<p><a href="https://news.ycombinator.com/item?id=47417804">The HN “Get Shit Done” system from March 2026</a> (473 upvotes, 254 comments) is the clearest publicly documented evidence of context engineering delivering real velocity. The author reported 250K lines of code written in under a month, describing a meta-prompting + context engineering + spec-driven system. The discussion was split:</p>
+<blockquote>
+<p><em>“With GSD, I was able to write 250K lines of code in less than a month, without prior knowledge of claude.”</em></p>
+</blockquote>
+<p>And the skeptic:</p>
+<blockquote>
+<p><em>“I’ve tried it, and I’m not convinced I got measurably better results than just prompting Claude Code directly.”</em></p>
+</blockquote>
+<p>Both responses are instructive. The system works when you have a clear spec - the “If you know clearly what you want” qualifier in the original post is load-bearing. Context engineering amplifies clarity; it does not manufacture it. If your task spec is vague, a better harness won’t help.</p>
+<p>The <a href="https://www.reddit.com/r/LocalLLaMA/comments/1ot9x8a/388_tickets_in_6_weeks_context_engineering_done/">r/LocalLLaMA “388 Tickets in 6 Weeks” post</a> tells a similar story: concrete task specs, structured context injection, and iterative feedback yielded measurable productivity gains. The pattern is consistent.</p>
+<p>On the enterprise side, <a href="https://x.com/Aiszone_/status/2041114711765156079">@Aiszone_ described the practical starting point</a>:</p>
+<blockquote>
+<p><em>“le premier truc que j’ai fait c’est un CLAUDE.md de 200 lignes avec les regles du projet et le workflow. opus 4.6 tourne h24”</em></p>
+</blockquote>
+<p>Translation: a 200-line structured context document with project rules and workflow definition. Not a clever prompt. A context artifact.</p>
+<p><a href="https://www.youtube.com/watch?v=xlUIiTSaFKI">A Vizuara bootcamp series on context engineering</a> (12K+ views within the last 30 days) reported that <a href="https://www.gartner.com/en/articles/context-engineering">Gartner is projecting</a> 40% of enterprise applications will use task-specific AI agents by late 2026. If that number is even half right, context management becomes infrastructure - the kind of thing you build standards around, not the kind of thing each team improvises independently.</p>
+<hr>
+<h2 id="the-unsolved-part">The Unsolved Part</h2>
+<p><a href="https://www.reddit.com/r/aiagents/comments/1rx545o/context_engineering_is_the_new_buzzword_but/">The r/aiagents thread from March 2026</a> cuts through the optimism:</p>
+<blockquote>
+<p><em>“Context engineering is the new buzzword. But nobody’s solving the actual hard part.”</em></p>
+</blockquote>
+<p>The thread’s 27 comments converge on what the hard part actually is: <strong>coherent stateful context management across long, multi-step, multi-agent workflows</strong>. Not RAG. Not CLAUDE.md files. Not memory tiers.</p>
+<p>The problem is this: when an agent runs for 200 steps - spawning sub-agents, making tool calls, handling errors, retrying - the context at step 150 should be an intelligent compression of everything that happened in steps 1-149. Not a dump. Not a truncation. A curated, structured representation of the task state that gives the model at step 150 exactly what it needs and nothing else.</p>
+<p>Nobody has a clean solution to this at scale. <a href="https://arxiv.org/abs/2510.04618">The Agentic Context Engineering (ACE) paper from arXiv</a> (October 2025, <a href="https://news.ycombinator.com/item?id=47534337">surfaced on HN in March 2026</a>) proposes treating context as an <strong>evolving playbook</strong>: a structured document that accumulates strategy, reflects on failures, and curates successful patterns - updated after each step by a separate reflection module. The approach prevents collapse (context becoming incoherent over many steps) and enables cross-session learning (the playbook improves across multiple runs of similar tasks).</p>
+<p>It’s promising. It’s not production-hardened. And it requires compute overhead - a second LLM call per agent step to update the playbook - that doesn’t fit every budget.</p>
+<p>The r/LocalLLaMA community’s answer is more pragmatic: force structure. Instead of letting context evolve organically, define explicit schemas for agent state and enforce them at every step. Structured scratchpad. Typed task state. Explicit transition rules. Messy, but it survives 200 steps in production in a way that free-form context evolution doesn’t.</p>
+<hr>
+<h2 id="what-this-means-for-enterprise-architecture">What This Means for Enterprise Architecture</h2>
+<p>If you’re a staff or principal engineer evaluating how to build agentic systems into your enterprise stack, here is the concrete takeaway.</p>
+<p><strong>Context pipelines need the same engineering discipline as data pipelines.</strong> Schema design. Quality gates. Observability. SLAs on retrieval latency. Data lineage (where did this chunk in the context come from?). Version control for context templates. The teams that are winning in production have built this infrastructure; the teams still struggling are treating context as an afterthought.</p>
+<p><strong>Test your context, not just your prompts.</strong> A prompt-centric test suite tells you whether the model responds correctly to a given input. A context-centric test suite tells you whether the assembled context for a given task state is correct - whether the right documents were retrieved, whether the history compression preserved the critical facts, whether the tool output is in a format the model can use. These are different tests, and you need both.</p>
+<p><strong>Build a context compiler, not a prompt template.</strong> The harness that assembles context at runtime is a first-class engineering artifact. It should be version-controlled, tested independently, monitored in production, and owned by a clear team. <a href="https://x.com/Aiszone_/status/2041114711765156079">@Aiszone_’s 200-line CLAUDE.md</a> is the minimum viable version. A production harness for a multi-agent system is a service.</p>
+<p><strong>Plan for context rot before you hit it.</strong> Set up retrieval quality metrics before you go to production. Monitor context fill rates. Alert when average context relevance scores drop below threshold. By the time you notice context rot in output quality, the problem has existed for a while.</p>
+<hr>
+<h2 id="the-maturity-arc">The Maturity Arc</h2>
+<p>Looking at where the field is in April 2026:</p>
+<p><strong>Solved (production-ready):</strong> Static context design (system prompts, tool definitions), RAG retrieval patterns, short-session episodic memory, MCP-based tool integration, single-agent context management.</p>
+<p><strong>Maturing (production-possible, operationally complex):</strong> Long-session stateful context, multi-agent context coordination, relevance-scored dynamic retrieval, context observability tooling.</p>
+<p><strong>Unsolved (research frontier):</strong> Long-horizon coherent context management across 100+ agent steps, efficient cross-agent context sharing without information leakage, automated context quality measurement, context evolution that preserves strategic coherence across many sessions.</p>
+<p>The enterprises that treat the “maturing” category as infrastructure problems - not model problems - are the ones building reliably. The enterprises that wait for model capability improvements to paper over context management debt are accumulating it.</p>
+<hr>
+<h2 id="conclusion">Conclusion</h2>
+<p>Context windows aren’t just a memory limit - they’re a design constraint that shapes how you structure information. (<a href="/posts/micropost-on-llm-context-windows">I wrote a shorter version of this point in a micropost in February.</a> I was underselling it.)</p>
+<p>The real statement is stronger: <strong>context management is the primary engineering discipline of agentic AI systems.</strong> More than model selection. More than prompt crafting. More than fine-tuning. If the context is wrong, the model - however capable - reasons on bad inputs and produces bad outputs. If the context is right, you need surprisingly little magic from the prompt.</p>
+<p><a href="https://x.com/karpathy/status/2035174102974308666">Karpathy’s framing</a> - context + spec + harness - is the most useful mental model available right now. Context is what the model knows. Spec is what it’s trying to do. Harness is the system that puts them together correctly at runtime. Of the three, harness engineering is the least written about and the most critical for production reliability.</p>
+<p>The discipline is young. The tooling is immature. The community is still working out the vocabulary. But the fundamental insight is not going anywhere: the context window is finite, attention is not uniform, and building reliable agentic systems means engineering what goes inside it with the same rigor you’d apply to any critical data system.</p>
+<p>Build the harness. Own the context. That’s the job.</p>
+<hr>
+<p><strong>References:</strong></p>
+<ol>
+<li>Karpathy, A. (2026, March 21). <a href="https://x.com/karpathy/status/2035174102974308666">Context and spec engineering</a>. <em>X (Twitter)</em>.</li>
+<li>IBM Technology. (2025, August). <a href="https://www.youtube.com/watch?v=vD0E3EUb8-8">Context Engineering vs. Prompt Engineering: Smarter AI with RAG &#x26; Agents</a>. <em>YouTube</em>.</li>
+<li>LangChain. (2025, July). <a href="https://blog.langchain.com/context-engineering-for-agents/">Context Engineering for Agents</a>. <em>LangChain Blog</em>.</li>
+<li>Weaviate. <a href="https://weaviate.io/blog/context-engineering">Context Engineering - LLM Memory and Retrieval for AI Agents</a>. <em>Weaviate Blog</em>.</li>
+<li>Polak, A. (2026). <a href="https://x.com/MunshiPremChnd/status/2041109853674885129">Context Engineering with Adi Polak</a>. <em>Podcast, circulated via X</em>.</li>
+<li>Chen et al. (2025, October). <a href="https://arxiv.org/abs/2510.04618">Agentic Context Engineering: Evolving Contexts for Self-Improving Language Models</a>. <em>arXiv</em>.</li>
+<li>Neo4j. <a href="https://neo4j.com/blog/agentic-ai/context-engineering-vs-prompt-engineering/">Why AI Teams Are Moving From Prompt Engineering to Context Engineering</a>. <em>Neo4j Blog</em>.</li>
+<li>Gartner. <a href="https://www.gartner.com/en/articles/context-engineering">Context Engineering: Why it’s Replacing Prompt Engineering for Enterprise AI Success</a>. <em>Gartner</em>.</li>
+<li>Pollak, L. (2026, April 6). <a href="https://x.com/LiorPollak/status/2041121114517041475">Claude Code context assembly</a>. <em>X (Twitter)</em>.</li>
+<li>r/aiagents. (2026, March 18). <a href="https://www.reddit.com/r/aiagents/comments/1rx545o/context_engineering_is_the_new_buzzword_but/">“Context engineering is the new buzzword. But nobody’s solving the actual hard part.”</a>. <em>Reddit</em>.</li>
+<li>Schmid, P. <a href="https://www.philschmid.de/context-engineering">The New Skill in AI is Not Prompting, It’s Context Engineering</a>. <em>philschmid.de</em>.</li>
+<li>LlamaIndex. <a href="https://www.llamaindex.ai/blog/context-engineering-what-it-is-and-techniques-to-consider">Context Engineering - What It Is and Techniques to Consider</a>. <em>LlamaIndex Blog</em>.</li>
+<li>arfujeddy14. (2026, April 6). <a href="https://x.com/arfujeddy14/status/2041157680480289159">Power users stopped obsessing over prompt templates</a>. <em>X (Twitter)</em>.</li>
+<li>Aiszone_. (2026, April 6). <a href="https://x.com/Aiszone_/status/2041114711765156079">CLAUDE.md 200 lignes</a>. <em>X (Twitter)</em>.</li>
+<li>Liu, N. F. et al. (2023). <a href="https://arxiv.org/abs/2307.03172">Lost in the Middle: How Language Models Use Long Contexts</a>. <em>arXiv:2307.03172</em>. Empirical study demonstrating LLM performance degrades when relevant information is placed in the middle of long contexts - the foundational backing for the context rot curve shape.</li>
+</ol>   </div>  <div class="giscus-container" data-astro-cid-an2nl7ar> <div class="giscus" data-astro-cid-an2nl7ar></div> </div> <script>
+  (function () {
+    const theme = localStorage.getItem('theme') === 'dark' ? 'dark' : 'light';
+    const script = document.createElement('script');
+    script.src = 'https://giscus.app/client.js';
+    script.dataset.repo = 'lalitkale/lalitkale.github.io';
+    script.dataset.repoId = 'MDEwOlJlcG9zaXRvcnkyNDAxMDA3MDY=';
+    script.dataset.category = 'General';
+    script.dataset.categoryId = 'DIC_kwDODk-lYs4C3aPy';
+    script.dataset.mapping = 'pathname';
+    script.dataset.strict = '0';
+    script.dataset.reactionsEnabled = '1';
+    script.dataset.emitMetadata = '0';
+    script.dataset.inputPosition = 'top';
+    script.dataset.theme = theme;
+    script.dataset.lang = 'en';
+    script.crossOrigin = 'anonymous';
+    script.async = true;
+    document.querySelector('.giscus-container').appendChild(script);
+
+    // Keep giscus theme in sync when user toggles dark mode
+    const observer = new MutationObserver(() => {
+      const newTheme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+      const iframe = document.querySelector('iframe.giscus-frame');
+      if (iframe) {
+        iframe.contentWindow.postMessage(
+          { giscus: { setConfig: { theme: newTheme } } },
+          'https://giscus.app'
+        );
+      }
+    });
+    observer.observe(document.documentElement, { attributeFilter: ['class'] });
+  })();
+</script>  <div class="subscribe-section"> <script async src="https://eomail5.com/form/997a8128-1fda-11f1-99b0-65cf1c2bcffa.js" data-form="997a8128-1fda-11f1-99b0-65cf1c2bcffa"></script> </div> <script type="module">const c=document.querySelector(".subscribe-section");if(c){const s=new MutationObserver(()=>{const e=c.querySelector("h1");if(e){const t=document.createElement("p");t.className=e.className,t.textContent=e.textContent,e.replaceWith(t),s.disconnect()}});s.observe(c,{childList:!0,subtree:!0})}</script>  </article> <script type="module">const n=document.querySelectorAll('pre[data-language="mermaid"]');if(n.length>0){const m=document.documentElement.classList.contains("dark");import("https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs").then(s=>{const t=s.default;t.initialize({startOnLoad:!1,theme:m?"dark":"neutral",fontFamily:"Inter, -apple-system, sans-serif"});const i=new DOMParser;n.forEach((a,d)=>{const c=a.textContent??"",e=document.createElement("div");e.className="mermaid-diagram",a.replaceWith(e),t.render("mermaid-"+d,c).then(({svg:l})=>{const r=i.parseFromString(l,"text/html").querySelector("svg");r&&e.appendChild(r)})})})}</script>   </main> <footer class="footer" data-astro-cid-sz7xmlte> <p data-astro-cid-sz7xmlte>Built with <a href="https://astro.build" target="_blank" rel="noopener" data-astro-cid-sz7xmlte>Astro</a> &mdash; 2026-04-06 21:52 UTC</p> </footer>  </div> </body></html>
