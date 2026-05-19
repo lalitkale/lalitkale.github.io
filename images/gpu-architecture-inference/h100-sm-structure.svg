@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 420" width="680" height="420" font-family="system-ui, -apple-system, sans-serif">
+<rect width="680" height="420" fill="#fafaf8"/>
+<text font-weight="600" font-size="14" fill="#1a1a1a" x="340" y="20" text-anchor="middle">H100 streaming multiprocessor (SM) internal structure</text>
+<rect x="40" y="36" width="600" height="360" rx="14" fill="none" stroke="#555" stroke-width="1" stroke-dasharray="6 3"/>
+<text font-size="11" fill="#555" x="56" y="52">SM boundary</text>
+<rect x="60" y="60" width="130" height="32" rx="4" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+<text font-weight="600" font-size="11" fill="#3C3489" x="125" y="80" text-anchor="middle">Warp scheduler</text>
+<rect x="200" y="60" width="130" height="32" rx="4" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+<text font-weight="600" font-size="11" fill="#3C3489" x="265" y="80" text-anchor="middle">Warp scheduler</text>
+<rect x="340" y="60" width="130" height="32" rx="4" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+<text font-weight="600" font-size="11" fill="#3C3489" x="405" y="80" text-anchor="middle">Warp scheduler</text>
+<rect x="480" y="60" width="130" height="32" rx="4" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+<text font-weight="600" font-size="11" fill="#3C3489" x="545" y="80" text-anchor="middle">Warp scheduler</text>
+<rect x="60" y="104" width="130" height="42" rx="4" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+<text font-weight="600" font-size="11" fill="#085041" x="125" y="120" text-anchor="middle">FP32 CUDA cores</text>
+<text font-size="10" fill="#0F6E56" x="125" y="136" text-anchor="middle">32 per partition</text>
+<rect x="200" y="104" width="130" height="42" rx="4" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+<text font-weight="600" font-size="11" fill="#085041" x="265" y="120" text-anchor="middle">FP32 CUDA cores</text>
+<text font-size="10" fill="#0F6E56" x="265" y="136" text-anchor="middle">32 per partition</text>
+<rect x="340" y="104" width="130" height="42" rx="4" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+<text font-weight="600" font-size="11" fill="#085041" x="405" y="120" text-anchor="middle">FP32 CUDA cores</text>
+<text font-size="10" fill="#0F6E56" x="405" y="136" text-anchor="middle">32 per partition</text>
+<rect x="480" y="104" width="130" height="42" rx="4" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+<text font-weight="600" font-size="11" fill="#085041" x="545" y="120" text-anchor="middle">FP32 CUDA cores</text>
+<text font-size="10" fill="#0F6E56" x="545" y="136" text-anchor="middle">32 per partition</text>
+<rect x="60" y="158" width="275" height="42" rx="4" fill="#FAECE7" stroke="#993C1D" stroke-width="0.5"/>
+<text font-weight="600" font-size="11" fill="#712B13" x="198" y="174" text-anchor="middle">4th gen Tensor Cores (FP8, FP16, TF32)</text>
+<text font-size="10" fill="#993C1D" x="198" y="190" text-anchor="middle">4 per SM partition</text>
+<rect x="345" y="158" width="265" height="42" rx="4" fill="#FAECE7" stroke="#993C1D" stroke-width="0.5"/>
+<text font-weight="600" font-size="11" fill="#712B13" x="478" y="174" text-anchor="middle">Transformer engine</text>
+<text font-size="10" fill="#993C1D" x="478" y="190" text-anchor="middle">Dynamic FP8/FP16 switching</text>
+<rect x="60" y="212" width="550" height="32" rx="4" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5"/>
+<text font-weight="600" font-size="11" fill="#633806" x="335" y="232" text-anchor="middle">Register file: 64K x 32-bit registers (256 KB)</text>
+<rect x="60" y="256" width="550" height="42" rx="4" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+<text font-weight="600" font-size="11" fill="#0C447C" x="335" y="272" text-anchor="middle">L1 data cache / shared memory (configurable, up to 228 KB)</text>
+<text font-size="10" fill="#185FA5" x="335" y="288" text-anchor="middle">Software-managed scratchpad for tiled matrix operations</text>
+<rect x="60" y="310" width="265" height="32" rx="4" fill="#f0f0eb" stroke="#5F5E5A" stroke-width="0.5"/>
+<text font-weight="600" font-size="11" fill="#444441" x="193" y="330" text-anchor="middle">Load/store units (32 per SM)</text>
+<rect x="345" y="310" width="265" height="32" rx="4" fill="#f0f0eb" stroke="#5F5E5A" stroke-width="0.5"/>
+<text font-weight="600" font-size="11" fill="#444441" x="478" y="330" text-anchor="middle">Special function units (16)</text>
+<text font-size="11" fill="#555" x="340" y="374" text-anchor="middle">&#8595; To L2 cache (50 MB shared across 132 SMs) &#8595;</text>
+</svg>

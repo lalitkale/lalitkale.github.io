@@ -1,0 +1,361 @@
+<!DOCTYPE html><html lang="en" data-astro-cid-dmqsi53g> <head><script>
+      (function() {
+        const stored = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (stored === 'dark' || (!stored && prefersDark)) {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>The silicon beneath inference: a GPU architecture primer for AI engineers — ATechieThought Labs</title><meta name="description" content="Understanding memory hierarchies, compute architectures, and optimization tradeoffs that determine how fast your models run. A technical reference for senior engineers entering the AI inference space."><link rel="canonical" href="https://lalitkale.com/posts/gpu-architecture-inference/"><!-- Open Graph --><meta property="og:type" content="article"><meta property="og:title" content="The silicon beneath inference: a GPU architecture primer for AI engineers — ATechieThought Labs"><meta property="og:description" content="Understanding memory hierarchies, compute architectures, and optimization tradeoffs that determine how fast your models run. A technical reference for senior engineers entering the AI inference space."><meta property="og:url" content="https://lalitkale.com/posts/gpu-architecture-inference/"><meta property="og:site_name" content="ATechieThought Labs"><meta property="og:image" content="https://lalitkale.com/images/gpu-architecture-inference/og-image.png"><!-- Twitter --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="The silicon beneath inference: a GPU architecture primer for AI engineers — ATechieThought Labs"><meta name="twitter:description" content="Understanding memory hierarchies, compute architectures, and optimization tradeoffs that determine how fast your models run. A technical reference for senior engineers entering the AI inference space."><meta name="twitter:image" content="https://lalitkale.com/images/gpu-architecture-inference/og-image.png"><!-- JSON-LD --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"BlogPosting","headline":"The silicon beneath inference: a GPU architecture primer for AI engineers","description":"Understanding memory hierarchies, compute architectures, and optimization tradeoffs that determine how fast your models run. A technical reference for senior engineers entering the AI inference space.","datePublished":"2026-05-19T00:00:00.000Z","url":"https://lalitkale.com/posts/gpu-architecture-inference","mainEntityOfPage":{"@type":"WebPage","@id":"https://lalitkale.com/posts/gpu-architecture-inference"},"author":{"@type":"Person","name":"Lalit Kale"},"publisher":{"@type":"Organization","name":"ATechieThought Labs","url":"https://lalitkale.github.io"}},{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://lalitkale.com/"},{"@type":"ListItem","position":2,"name":"Posts","item":"https://lalitkale.com/posts/"},{"@type":"ListItem","position":3,"name":"The silicon beneath inference: a GPU architecture primer for AI engineers","item":"https://lalitkale.com/posts/gpu-architecture-inference"}]}]</script><link rel="alternate" type="application/rss+xml" title="ATechieThought Labs" href="/rss.xml"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,ital,wght@8..60,0,400;8..60,0,600;8..60,0,700;8..60,1,400&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"><script defer src="https://cloud.umami.is/script.js" data-website-id="050a7fdf-1139-437e-8a35-8f80160bd07d"></script><style>.nav[data-astro-cid-dmqpwcec]{display:flex;justify-content:space-between;align-items:baseline;padding:var(--space-lg) 0;border-bottom:1px solid var(--color-border);margin-bottom:var(--space-2xl)}.nav-brand[data-astro-cid-dmqpwcec]{font-family:var(--font-heading);font-size:.875rem;font-weight:600;letter-spacing:-.01em;text-decoration:none;color:var(--color-text)}.nav-brand[data-astro-cid-dmqpwcec]:hover{color:var(--color-text-secondary)}.nav-links[data-astro-cid-dmqpwcec]{display:flex;gap:var(--space-lg)}.nav-links[data-astro-cid-dmqpwcec] a[data-astro-cid-dmqpwcec]{font-family:var(--font-heading);font-size:.8125rem;color:var(--color-text-secondary);text-decoration:none}.nav-links[data-astro-cid-dmqpwcec] a[data-astro-cid-dmqpwcec]:hover,.nav-links[data-astro-cid-dmqpwcec] a[data-astro-cid-dmqpwcec].active{color:var(--color-text)}.nav-actions[data-astro-cid-dmqpwcec]{display:flex;align-items:center;gap:var(--space-md);margin-left:var(--space-md)}.search-link[data-astro-cid-dmqpwcec]{display:flex;align-items:center;color:var(--color-text-secondary);text-decoration:none}.search-link[data-astro-cid-dmqpwcec]:hover,.search-link[data-astro-cid-dmqpwcec].active{color:var(--color-text)}.theme-toggle[data-astro-cid-dmqpwcec]{background:none;border:none;cursor:pointer;padding:0;color:var(--color-text-secondary);display:flex;align-items:center;line-height:1}.theme-toggle[data-astro-cid-dmqpwcec]:hover{color:var(--color-text)}.icon-sun[data-astro-cid-dmqpwcec]{display:none}.icon-moon[data-astro-cid-dmqpwcec],html.dark .icon-sun[data-astro-cid-dmqpwcec]{display:block}html.dark .icon-moon[data-astro-cid-dmqpwcec]{display:none}.footer[data-astro-cid-sz7xmlte]{margin-top:var(--space-2xl);padding:var(--space-lg) 0;border-top:1px solid var(--color-border)}.footer[data-astro-cid-sz7xmlte] p[data-astro-cid-sz7xmlte]{font-family:var(--font-heading);font-size:.75rem;color:var(--color-text-tertiary)}.footer[data-astro-cid-sz7xmlte] a[data-astro-cid-sz7xmlte]{color:var(--color-text-tertiary)}.footer[data-astro-cid-sz7xmlte] a[data-astro-cid-sz7xmlte]:hover{color:var(--color-text-secondary)}:root{--font-body: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;--font-heading: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;--font-serif: "Source Serif 4", Georgia, "Times New Roman", serif;--font-mono: "JetBrains Mono", "Fira Code", Consolas, monospace;--color-text: #1a1a1a;--color-text-secondary: #4a4a4a;--color-text-tertiary: #717171;--color-bg: #fafaf7;--color-surface: #ffffff;--color-border: #e2e0d8;--color-link: #1a1a1a;--color-link-hover: #4a4a4a;--color-code-bg: #f1efe8;--width-content: 640px;--width-page: 720px;--space-xs: .25rem;--space-sm: .5rem;--space-md: 1rem;--space-lg: 2rem;--space-xl: 3rem;--space-2xl: 5rem}*,*:before,*:after{margin:0;padding:0;box-sizing:border-box}html{font-size:18px;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility}body{font-family:var(--font-body);color:var(--color-text);background-color:var(--color-bg);line-height:1.7;transition:background-color .2s ease,color .2s ease}a{color:var(--color-link);text-decoration-thickness:1px;text-underline-offset:2px;transition:color .15s ease}a:hover{color:var(--color-link-hover)}img{max-width:100%;height:auto;display:block}::selection{background-color:#d4d4d0}html.dark{--color-text: #e8e6e1;--color-text-secondary: #a8a49e;--color-text-tertiary: #706c66;--color-bg: #1a1917;--color-surface: #221f1c;--color-border: #2e2b27;--color-link: #e8e6e1;--color-link-hover: #a8a49e;--color-code-bg: #252220}html.dark ::selection{background-color:#3a3733}.page[data-astro-cid-dmqsi53g]{max-width:var(--width-page);margin:0 auto;padding:0 var(--space-lg);min-height:100vh;display:flex;flex-direction:column}main[data-astro-cid-dmqsi53g]{flex:1}
+.heading[data-astro-cid-u4qoyrkz]{font-family:var(--font-serif);color:var(--color-text);letter-spacing:-.02em;line-height:1.2}.heading-h1[data-astro-cid-u4qoyrkz]{font-size:2rem;font-weight:700;margin-bottom:var(--space-md)}.heading-h2[data-astro-cid-u4qoyrkz]{font-size:1.375rem;font-weight:600;margin-top:var(--space-xl);margin-bottom:var(--space-sm)}.heading-h3[data-astro-cid-u4qoyrkz]{font-size:1.125rem;font-weight:600;margin-top:var(--space-lg);margin-bottom:var(--space-sm)}
+.prose[data-astro-cid-apjhz64k]{font-family:var(--font-body);font-size:1rem;line-height:1.75;color:var(--color-text)}.prose[data-astro-cid-apjhz64k] p{margin-bottom:1.5em}.prose[data-astro-cid-apjhz64k] h2{font-family:var(--font-serif);font-size:1.375rem;font-weight:600;letter-spacing:-.02em;line-height:1.3;margin-top:2.5em;margin-bottom:.75em;padding-bottom:.5em;border-bottom:1px solid var(--color-border);color:var(--color-text)}.prose[data-astro-cid-apjhz64k] h3{font-family:var(--font-heading);font-size:1rem;font-weight:600;letter-spacing:-.01em;line-height:1.4;margin-top:1.75em;margin-bottom:.5em;color:var(--color-text)}.prose[data-astro-cid-apjhz64k] a{color:var(--color-link);text-decoration-thickness:1px;text-underline-offset:2px}.prose[data-astro-cid-apjhz64k] a:hover{color:var(--color-link-hover)}.prose[data-astro-cid-apjhz64k] blockquote{border-left:2px solid var(--color-border);padding-left:var(--space-lg);margin:1.5em 0;color:var(--color-text-secondary);font-style:italic}.prose[data-astro-cid-apjhz64k] ul,.prose[data-astro-cid-apjhz64k] ol{margin-bottom:1.5em;padding-left:1.5em}.prose[data-astro-cid-apjhz64k] li{margin-bottom:.375em}.prose[data-astro-cid-apjhz64k] code{font-family:var(--font-mono);font-size:.85em;background-color:var(--color-code-bg);padding:.125em .375em;border-radius:3px}.prose[data-astro-cid-apjhz64k] pre{background-color:var(--color-code-bg);padding:var(--space-lg);border-radius:4px;overflow-x:auto;margin:1.5em 0;line-height:1.5}.prose[data-astro-cid-apjhz64k] pre code{background:none;padding:0;font-size:.8125rem}.prose[data-astro-cid-apjhz64k] hr{border:none;border-top:1px solid var(--color-border);margin:2.5em 0}.prose[data-astro-cid-apjhz64k] img{border-radius:4px;margin:1.5em 0}.prose[data-astro-cid-apjhz64k] strong{font-weight:600}.tag-list[data-astro-cid-lga65v7i]{display:flex;flex-wrap:wrap;gap:var(--space-xs);margin-top:var(--space-sm)}.tag[data-astro-cid-lga65v7i]{font-family:var(--font-heading);font-size:.75rem;color:var(--color-text-secondary);text-decoration:none;border:1px solid var(--color-border);padding:.125rem .5rem;border-radius:3px;transition:color .15s ease,border-color .15s ease}.tag[data-astro-cid-lga65v7i]:hover{color:var(--color-text);border-color:var(--color-text-secondary)}.series-badge[data-astro-cid-u54u4p2g]{font-family:var(--font-heading);font-size:.8125rem;color:var(--color-text-secondary);border-left:3px solid var(--color-border);padding-left:var(--space-sm);margin-top:var(--space-sm)}.series-badge[data-astro-cid-u54u4p2g] a[data-astro-cid-u54u4p2g]{color:var(--color-text);text-decoration:underline;text-underline-offset:2px}.series-badge[data-astro-cid-u54u4p2g] a[data-astro-cid-u54u4p2g]:hover{color:var(--color-text-secondary)}.author-card[data-astro-cid-32rj7774]{display:flex;align-items:center;gap:var(--space-sm);margin-top:var(--space-sm)}.author-avatar[data-astro-cid-32rj7774]{width:1.75rem;height:1.75rem;border-radius:50%;object-fit:cover}.author-name[data-astro-cid-32rj7774]{font-family:var(--font-heading);font-size:.8125rem;color:var(--color-text-secondary)}.giscus-container[data-astro-cid-an2nl7ar]{margin-top:var(--space-2xl)}.article[data-astro-cid-q7kxohas]{max-width:var(--width-content)}.article-header[data-astro-cid-q7kxohas]{margin-bottom:var(--space-xl)}.article-meta[data-astro-cid-q7kxohas]{font-family:var(--font-mono);font-size:.6875rem;text-transform:uppercase;letter-spacing:.05em;color:var(--color-text-tertiary);margin-top:var(--space-sm);display:flex;flex-direction:column;gap:var(--space-xs)}.mermaid-diagram{margin:1.5em 0;overflow-x:auto}.mermaid-diagram svg{max-width:100%;height:auto;display:block;margin:0 auto}
+.subscribe-section{margin-top:var(--space-2xl)}
+</style></head> <body data-astro-cid-dmqsi53g> <div class="page" data-astro-cid-dmqsi53g> <nav class="nav" data-astro-cid-dmqpwcec> <a href="/" class="nav-brand" data-astro-cid-dmqpwcec>ATechieThought Labs</a> <div class="nav-links" data-astro-cid-dmqpwcec> <a href="/microposts" data-astro-cid-dmqpwcec>Microposts</a> <a href="/series" data-astro-cid-dmqpwcec>Series</a> <a href="/talks" data-astro-cid-dmqpwcec>Talks</a> <a href="/about" data-astro-cid-dmqpwcec>About</a> <a href="/rss.xml" data-astro-cid-dmqpwcec>RSS</a> </div> <div class="nav-actions" data-astro-cid-dmqpwcec> <a href="/search" class="search-link" aria-label="Search" data-astro-cid-dmqpwcec> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-astro-cid-dmqpwcec> <circle cx="11" cy="11" r="8" data-astro-cid-dmqpwcec></circle> <line x1="21" y1="21" x2="16.65" y2="16.65" data-astro-cid-dmqpwcec></line> </svg> </a> <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" data-astro-cid-dmqpwcec> <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-dmqpwcec> <circle cx="12" cy="12" r="5" data-astro-cid-dmqpwcec></circle> <line x1="12" y1="1" x2="12" y2="3" data-astro-cid-dmqpwcec></line> <line x1="12" y1="21" x2="12" y2="23" data-astro-cid-dmqpwcec></line> <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" data-astro-cid-dmqpwcec></line> <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" data-astro-cid-dmqpwcec></line> <line x1="1" y1="12" x2="3" y2="12" data-astro-cid-dmqpwcec></line> <line x1="21" y1="12" x2="23" y2="12" data-astro-cid-dmqpwcec></line> <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" data-astro-cid-dmqpwcec></line> <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" data-astro-cid-dmqpwcec></line> </svg> <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-dmqpwcec> <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" data-astro-cid-dmqpwcec></path> </svg> </button> </div> </nav> <script type="module">const t=document.getElementById("theme-toggle");t?.addEventListener("click",()=>{const e=document.documentElement.classList.toggle("dark");localStorage.setItem("theme",e?"dark":"light")});</script>  <main data-astro-cid-dmqsi53g>   <article class="article" data-astro-cid-q7kxohas> <header class="article-header" data-astro-cid-q7kxohas> <h1 data-astro-cid-u4qoyrkz="true" class="heading heading-h1"> The silicon beneath inference: a GPU architecture primer for AI engineers </h1>  <div class="article-meta" data-astro-cid-q7kxohas> <time datetime="2026-05-19T00:00:00.000Z" data-astro-cid-q7kxohas>May 19, 2026</time> <div class="author-card" data-astro-cid-32rj7774> <img src="/images/Lalit_Kale.jpg" alt="Lalit Kale" class="author-avatar" data-astro-cid-32rj7774> <span class="author-name" data-astro-cid-32rj7774>Lalit Kale</span> </div>   <div class="tag-list" data-astro-cid-lga65v7i><a href="/tags/ai/" class="tag" data-astro-cid-lga65v7i>ai</a><a href="/tags/llm/" class="tag" data-astro-cid-lga65v7i>llm</a><a href="/tags/gpu/" class="tag" data-astro-cid-lga65v7i>gpu</a><a href="/tags/inference/" class="tag" data-astro-cid-lga65v7i>inference</a><a href="/tags/hardware/" class="tag" data-astro-cid-lga65v7i>hardware</a><a href="/tags/performance/" class="tag" data-astro-cid-lga65v7i>performance</a></div> </div> </header> <div class="prose" data-astro-cid-apjhz64k>   <p>Every production inference deployment sits on a stack of abstractions. Frameworks like vLLM and TensorRT-LLM present clean APIs. CUDA kernels hide the hardware. But when latency spikes, throughput plateaus, or costs spiral, the abstraction layers become walls. The engineers who break through those walls are the ones who understand what sits beneath: the silicon itself.</p>
+<p>This matters more than it once did. As models grow larger and inference costs dominate training costs in production, the GPU is no longer just “the thing that makes AI fast.” It is the constraint surface against which every optimization decision is made. Batch size, quantization strategy, attention mechanism, model parallelism: each of these choices interacts with specific properties of the hardware. Understanding those properties turns guesswork into engineering.</p>
+<p>What follows is a practitioner’s map of GPU architecture for AI inference, covering the three major silicon vendors (NVIDIA, AMD, Intel), the memory hierarchy that governs performance, and the techniques that bridge the gap between raw hardware capability and practical throughput.</p>
+<h2 id="how-gpus-think-about-work">How GPUs think about work</h2>
+<h3 id="the-memory-hierarchy-determines-everything">The memory hierarchy determines everything</h3>
+<p>A GPU is, at its core, a machine for moving data. The compute units (CUDA cores, Tensor Cores, or their equivalents) can perform arithmetic far faster than the memory system can feed them. This imbalance - the gap between compute throughput and memory bandwidth - is the central tension of GPU architecture. Every design decision radiates from it.</p>
+<p>The memory hierarchy exists to manage this tension. It consists of progressively larger, slower layers of storage, each acting as a staging area for the one above it. Registers sit closest to the compute units, with access times of roughly one clock cycle and bandwidth exceeding 19 TB/s per streaming multiprocessor (SM). Shared memory and L1 cache, which occupy the same physical SRAM on NVIDIA GPUs, offer 128 to 228 KB per SM with latencies of 20 to 30 cycles. The L2 cache (40 to 60 MB on current-generation GPUs) is shared across all SMs, with latencies around 150 to 200 cycles. HBM (High Bandwidth Memory), the main GPU memory where model weights reside, delivers 2 to 8 TB/s of bandwidth but at latencies of 400 to 800 cycles. System memory on the host CPU, reached via PCIe or NVLink, adds microseconds of latency.</p>
+<p><img src="/images/gpu-architecture-inference/memory-hierarchy.svg" alt="GPU memory hierarchy"></p>
+<p><em>Figure 1: GPU memory hierarchy showing approximate latencies and bandwidths. Width indicates relative capacity.</em></p>
+<p>For inference, the critical insight is this: model weights live in HBM. During the decode phase of autoregressive generation (when the model produces tokens one at a time), the GPU must read the entire weight matrix for every single token. The arithmetic intensity of this operation - the ratio of compute operations to bytes moved - is extremely low. The result is that most inference workloads are memory-bandwidth-bound, not compute-bound. The Tensor Cores sit idle, waiting for data.</p>
+<h3 id="throughput-over-latency-the-gpus-design-philosophy">Throughput over latency: the GPU’s design philosophy</h3>
+<p>CPUs optimize for latency. They invest transistors in branch predictors, speculative execution, deep out-of-order pipelines, and large caches, all aimed at making a single thread run as fast as possible. A modern server CPU might execute 8 to 16 threads with each one completing work in nanoseconds.</p>
+<p>GPUs take the opposite approach. They optimize for throughput by running thousands of threads simultaneously, each individually slower than a CPU thread. Where a CPU hides memory latency through caching and speculation, a GPU hides it through parallelism: when one group of threads (a “warp” of 32 threads on NVIDIA hardware) stalls waiting for a memory fetch, the hardware scheduler instantly switches to another warp that has data ready. This technique - latency hiding through massive thread occupancy - is why GPUs can sustain high utilization even with 400-cycle memory access times.</p>
+<p>The parallel structure maps naturally to neural network inference. A matrix multiplication (the dominant operation in transformer models) decomposes into thousands of independent multiply-accumulate operations that can run on separate threads. Each thread computes a small tile of the output matrix, and the results combine to form the final answer. This is not a coincidence: GPU architectures and deep learning co-evolved, each shaping the other.</p>
+<h2 id="three-architectures-one-problem">Three architectures, one problem</h2>
+<h3 id="nvidia-the-incumbents-depth">NVIDIA: the incumbent’s depth</h3>
+<p>NVIDIA’s data center GPU lineage runs from Ampere (A100, 2020) through Hopper (H100/H200, 2022/2024) to Blackwell (B200, launched 2025). Each generation has increased both compute density and memory bandwidth, but the architectural skeleton remains consistent: an array of streaming multiprocessors (SMs), each containing CUDA cores for general-purpose parallel computation, Tensor Cores for matrix math, and a hierarchy of on-chip memory.</p>
+<p>The H100 GPU contains 132 SMs. Each SM holds 128 FP32 CUDA cores, four fourth-generation Tensor Cores, a Transformer Engine that dynamically selects between FP8 and FP16 precision per layer, four warp schedulers, a 256 KB register file, and up to 228 KB of configurable L1 cache and shared memory. The SMs share a 50 MB L2 cache. The GPU connects to 80 GB of HBM3 at 3.35 TB/s.</p>
+<p><img src="/images/gpu-architecture-inference/h100-sm-structure.svg" alt="H100 streaming multiprocessor internal structure"></p>
+<p><em>Figure 2: Internal structure of an H100 SM. Each SM contains four processing partitions, each with its own warp scheduler and 32 CUDA cores. Tensor Cores and the Transformer Engine handle matrix operations for AI workloads.</em></p>
+<p>The Tensor Core is the critical unit for inference. Unlike a CUDA core, which executes one multiply-add per cycle, a fourth-generation Tensor Core performs a 16x8x16 matrix multiply-accumulate in a single operation, yielding hundreds of operations per cycle. In FP8 precision (the sweet spot for most inference), the H100 delivers 1,979 TFLOPS of dense compute. The H200, an incremental upgrade, keeps the same compute engine but expands memory to 141 GB of HBM3e at 4.8 TB/s, directly addressing the bandwidth bottleneck for large-model inference.</p>
+<p>The B200 (Blackwell architecture) uses a dual-die chiplet design with 208 billion transistors, delivers 4,500 TFLOPS in FP8 and 9,000 TFLOPS in FP4, and offers 192 GB of HBM3e at 8 TB/s. Blackwell’s fifth-generation Tensor Cores add native FP4 support, which effectively doubles inference throughput for compatible workloads by halving the bytes that must traverse the memory bus per operation.</p>
+<h3 id="amd-the-memory-advantage">AMD: the memory advantage</h3>
+<p>AMD’s data center GPU strategy centers on the Instinct MI300 series, built on the CDNA 3 architecture. Where NVIDIA uses the term “streaming multiprocessor,” AMD uses “compute unit” (CU). Each CU contains 64 stream processors and four matrix cores that execute MFMA (matrix fused multiply-add) instructions. The MI300X packs 304 CUs, totaling 19,456 stream processors.</p>
+<p>AMD’s competitive edge lies in memory. The MI300X ships with 192 GB of HBM3 at 5.3 TB/s, a substantial lead over the H100’s 80 GB at 3.35 TB/s. The MI325X extends this to 256 GB of HBM3E at 6 TB/s. For large language models, memory capacity determines whether a model fits on a single GPU or needs sharding across multiple devices (with the associated interconnect overhead). A 70B-parameter model in FP16 requires roughly 140 GB of memory for weights alone, which fits comfortably on an MI300X but barely squeezes into an H100 with no room for KV cache.</p>
+<p>The tradeoff is software maturity. AMD’s ROCm stack has narrowed the gap with CUDA significantly, with native PyTorch and TensorFlow support and HIP as a CUDA translation layer. But analysis from 2025 shows MI300X achieving only 37 to 66 percent of H100/H200 performance on many workloads, largely due to software overhead rather than hardware limitation. The hardware is competitive; the ecosystem still trails.</p>
+<h3 id="intel-the-value-proposition">Intel: the value proposition</h3>
+<p>Intel’s AI accelerator story has consolidated around Gaudi 3 (from the acquired Habana Labs team), with the Xe-HPC architecture (Data Center GPU Max, “Ponte Vecchio”) playing a secondary role. Gaudi 3 uses a dual-die package with 64 tensor processor cores (TPCs) and eight matrix multiplication engines (MMEs). Each TPC is a VLIW vector processor with 256-bit wide execution units. The chip delivers 1,835 TFLOPS in BF16 and FP8, roughly on par with the H100’s dense (non-sparse) FP8 throughput.</p>
+<p>Gaudi 3’s distinguishing feature is its networking architecture: 24 integrated 200 Gbps Ethernet ports per chip, enabling direct scale-out without external network switches. Its primary limitation is memory: 128 GB of HBM2e (not HBM3 or HBM3e) at 3.67 TB/s. The older memory generation constrains both capacity and bandwidth relative to competitors. Intel positions Gaudi 3 on price, often at half the cost of an H100, making it attractive for organizations where software flexibility (Gaudi supports PyTorch directly through the SynapseAI SDK) and total cost of ownership matter more than peak throughput.</p>
+<p><img src="/images/gpu-architecture-inference/vendor-comparison.svg" alt="Compute unit anatomy across vendors"></p>
+<p><em>Figure 3: Compute unit architecture comparison across NVIDIA Hopper, AMD CDNA 3, and Intel Gaudi 3.</em></p>
+<h3 id="the-numbers-side-by-side">The numbers side by side</h3>
+<p><strong>Table 1: Memory specifications across GPU families</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>GPU</th><th>Architecture</th><th>HBM capacity</th><th>HBM type</th><th>Bandwidth</th><th>TDP</th></tr></thead><tbody><tr><td>NVIDIA A100 SXM</td><td>Ampere</td><td>80 GB</td><td>HBM2e</td><td>2.0 TB/s</td><td>400W</td></tr><tr><td>NVIDIA H100 SXM</td><td>Hopper</td><td>80 GB</td><td>HBM3</td><td>3.35 TB/s</td><td>700W</td></tr><tr><td>NVIDIA H200 SXM</td><td>Hopper</td><td>141 GB</td><td>HBM3e</td><td>4.8 TB/s</td><td>700W</td></tr><tr><td>NVIDIA B200</td><td>Blackwell</td><td>192 GB</td><td>HBM3e</td><td>8.0 TB/s</td><td>1000W</td></tr><tr><td>AMD MI300X</td><td>CDNA 3</td><td>192 GB</td><td>HBM3</td><td>5.3 TB/s</td><td>750W</td></tr><tr><td>AMD MI325X</td><td>CDNA 3</td><td>256 GB</td><td>HBM3E</td><td>6.0 TB/s</td><td>1000W</td></tr><tr><td>Intel Gaudi 3</td><td>Gaudi</td><td>128 GB</td><td>HBM2e</td><td>3.67 TB/s</td><td>600-900W</td></tr></tbody></table>
+<p><strong>Table 2: Compute throughput (dense, non-sparse TFLOPS)</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>GPU</th><th>FP64</th><th>FP32/TF32</th><th>FP16/BF16</th><th>FP8</th><th>FP4</th></tr></thead><tbody><tr><td>NVIDIA A100</td><td>19.5</td><td>156 (TF32)</td><td>312</td><td>n/a</td><td>n/a</td></tr><tr><td>NVIDIA H100</td><td>67</td><td>495 (TF32)</td><td>990</td><td>1,979</td><td>n/a</td></tr><tr><td>NVIDIA H200</td><td>67</td><td>495 (TF32)</td><td>990</td><td>1,979</td><td>n/a</td></tr><tr><td>NVIDIA B200</td><td>40</td><td>~1,125 (TF32)</td><td>~2,250</td><td>4,500</td><td>9,000</td></tr><tr><td>AMD MI300X</td><td>81.7</td><td>653.7 (TF32)</td><td>1,307</td><td>2,615</td><td>n/a</td></tr><tr><td>AMD MI325X</td><td>163.4</td><td>653.7 (TF32)</td><td>1,307</td><td>2,615</td><td>n/a</td></tr><tr><td>Intel Gaudi 3</td><td>n/a</td><td>n/a</td><td>1,835 (BF16)</td><td>1,835</td><td>n/a</td></tr></tbody></table>
+<p><em>NVIDIA numbers are Tensor Core throughput. AMD numbers are Matrix Core throughput. Gaudi 3 BF16 and FP8 are at parity (same rate) - unusual, as most architectures double throughput from BF16 to FP8.</em></p>
+<h2 id="from-silicon-to-inference-optimization">From silicon to inference optimization</h2>
+<h3 id="two-phases-two-bottlenecks">Two phases, two bottlenecks</h3>
+<p>LLM inference splits into two distinct computational phases, each with a different performance profile. The prefill phase processes the entire input prompt in parallel. Because the GPU operates on a large input matrix (all prompt tokens at once), the arithmetic intensity is high: many multiply-accumulate operations per byte of memory read. Tensor Cores stay busy. This phase is compute-bound.</p>
+<p>The decode phase generates output tokens one at a time, autoregressively. Each token requires reading the full model weights from HBM but performs relatively little computation per byte loaded. The arithmetic intensity drops, often below 1 FLOP per byte, which is far below the roofline peak. This phase is memory-bandwidth-bound. For most production inference workloads, the decode phase dominates total latency.</p>
+<p><img src="/images/gpu-architecture-inference/inference-pipeline.svg" alt="LLM inference pipeline"></p>
+<p><em>Figure 4: LLM inference pipeline from model loading through token generation. The decode phase (step 4) dominates latency and is memory-bandwidth-bound.</em></p>
+<h3 id="the-memory-bandwidth-bottleneck-mathematically">The memory-bandwidth bottleneck, mathematically</h3>
+<p>A concrete example makes the bottleneck tangible. Take a 70B-parameter model quantized to FP16 (2 bytes per parameter). The model weights occupy 140 GB. During the decode phase, generating a single token requires reading all 140 GB of weights from HBM and performing roughly 140 billion multiply-add operations (2 FLOPs per parameter).</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>On an H100 (3.35 TB/s bandwidth, 990 TFLOPS FP16):</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Time to read weights = 140 GB / 3,350 GB/s = 41.8 ms</span></span>
+<span class="line"><span>Time to compute     = 280 GFLOP / 990 TFLOPS = 0.28 ms</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Arithmetic intensity = 280 GFLOP / 140 GB = 2 FLOP/byte</span></span>
+<span class="line"><span>Roofline ridge point = 990 TFLOPS / 3.35 TB/s = 295 FLOP/byte</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>At 2 FLOP/byte, we are deep in the memory-bound region.</span></span>
+<span class="line"><span>Theoretical max decode throughput = 1 / 0.0418s = ~24 tokens/second (batch size 1)</span></span></code></pre>
+<p>The arithmetic intensity of 2 FLOP/byte is roughly 150x below the roofline ridge point of 295 FLOP/byte. The compute units sit 99% idle during single-token decode. This explains why the H200’s 43% bandwidth increase (4.8 TB/s vs 3.35 TB/s) translates almost directly into a proportional inference speedup for memory-bound workloads, despite having identical compute.</p>
+<h3 id="batching-amortizing-the-weight-reads">Batching: amortizing the weight reads</h3>
+<p>Batching is the primary lever for improving GPU utilization during decode. If the GPU serves multiple requests simultaneously, it reads the weights from HBM once and applies them to all requests in the batch. The compute scales linearly with batch size, but the memory traffic stays roughly constant (ignoring KV cache growth). Larger batches push the workload from memory-bound toward compute-bound.</p>
+<p><strong>Table 3: Latency and utilization by batch size (70B model, FP16, H100 SXM)</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Batch size</th><th>Arithmetic intensity</th><th>Bottleneck</th><th>Approx. tokens/s</th><th>Compute util.</th></tr></thead><tbody><tr><td>1</td><td>2 FLOP/byte</td><td>Memory BW</td><td>~24</td><td>&#x3C;1%</td></tr><tr><td>8</td><td>16 FLOP/byte</td><td>Memory BW</td><td>~190</td><td>~5%</td></tr><tr><td>32</td><td>64 FLOP/byte</td><td>Memory BW</td><td>~750</td><td>~22%</td></tr><tr><td>128</td><td>256 FLOP/byte</td><td>Approaching ridge</td><td>~2,800</td><td>~87%</td></tr><tr><td>256</td><td>512 FLOP/byte</td><td>Compute</td><td>~3,500</td><td>~95%</td></tr></tbody></table>
+<p><em>Estimates assume decode-phase weight-dominant workload. Real throughput varies with sequence length, KV cache size, and attention overhead. The transition from memory-bound to compute-bound occurs near batch size 128 on H100.</em></p>
+<p>The catch: larger batch sizes require more memory for KV caches. Each request’s KV cache grows linearly with sequence length and model depth. For a 70B model with a 4096-token context, the KV cache per request is roughly 2.5 GB in FP16. At batch size 32, that is 80 GB of KV cache alone, leaving little room on an 80 GB H100. This is why the H200’s 141 GB and the MI300X’s 192 GB matter: they allow larger batch sizes before exhausting VRAM.</p>
+<h3 id="quantization-trading-precision-for-bandwidth">Quantization: trading precision for bandwidth</h3>
+<p>Quantization reduces the number of bytes per parameter, directly increasing effective memory bandwidth. Moving from FP16 (2 bytes) to INT8 (1 byte) halves the data that must traverse the memory bus, roughly doubling decode throughput for memory-bound workloads. FP8 achieves similar savings while maintaining the floating-point format’s dynamic range. FP4 (supported on NVIDIA Blackwell) quarters the original footprint.</p>
+<p>The quality tradeoff is nuanced. FP8 quantization for inference causes minimal accuracy degradation on most production tasks (classification, summarization, standard chat completion). INT4 quantization (GPTQ, AWQ) introduces measurable quality loss but enables models that otherwise would not fit in GPU memory. The engineering decision is a three-way tradeoff between model quality, throughput, and hardware cost.</p>
+<h3 id="the-framework-layer">The framework layer</h3>
+<p>Several inference frameworks translate these hardware-level optimizations into practical APIs. <strong>TensorRT-LLM</strong> (NVIDIA) provides the tightest hardware integration, with custom CUDA kernels for attention, quantization-aware compilation, and Transformer Engine support. It targets maximum throughput on NVIDIA hardware. <strong>vLLM</strong> introduced PagedAttention, which manages KV cache memory in fixed-size blocks (like OS virtual memory pages), eliminating fragmentation and enabling higher batch sizes. It supports both NVIDIA and AMD GPUs. <strong>Ollama</strong> wraps these optimizations in a user-friendly interface for local deployment, primarily on consumer hardware with <code>llama.cpp</code> as its backend. Each framework represents a different point on the ease-of-use vs. performance frontier.</p>
+<h2 id="production-tradeoffs">Production tradeoffs</h2>
+<h3 id="identifying-the-bottleneck-roofline-thinking">Identifying the bottleneck: roofline thinking</h3>
+<p>The roofline model provides a framework for reasoning about GPU performance. It plots achievable FLOPS as a function of arithmetic intensity (FLOP/byte of memory traffic). Below the ridge point, performance scales with memory bandwidth; above it, performance plateaus at peak compute. For the H100, the ridge point is approximately 295 FLOP/byte in FP16. For the MI300X, it is about 247 FLOP/byte.</p>
+<p>Most LLM decode workloads operate at 2 to 16 FLOP/byte (batch sizes 1 to 8), firmly in the memory-bound regime. Prefill, by contrast, can reach 100+ FLOP/byte with long prompts. The practical implication: optimization effort during decode should focus on reducing memory traffic (quantization, KV cache compression, speculative decoding), while prefill optimization targets compute efficiency (custom GEMM kernels, FlashAttention).</p>
+<h3 id="hardware-software-co-design-in-practice">Hardware-software co-design in practice</h3>
+<p>The convergence of hardware features and software techniques tells a coherent story. NVIDIA’s Transformer Engine dynamically switches between FP8 and FP16 per layer because some layers tolerate lower precision while others do not; the hardware adapts where static quantization would force a single choice. FlashAttention restructures the attention computation to maximize data reuse in shared memory (SRAM), avoiding the O(n²) HBM reads that standard attention requires. PagedAttention addresses a software problem (KV cache memory fragmentation) that arises from a hardware constraint (fixed VRAM capacity).</p>
+<p>These are not independent optimizations. They compose. A well-tuned inference stack running on an H200 might use FP8 quantization (halving weight memory), PagedAttention (maximizing batch size within 141 GB), FlashAttention (reducing attention memory traffic), and continuous batching (avoiding idle cycles between requests). Each technique addresses a different layer of the hardware-software stack, and their combined effect is multiplicative.</p>
+<h3 id="the-price-performance-decision">The price-performance decision</h3>
+<p><strong>Table 4: Price-performance comparison (approximate, as of early 2026)</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>GPU</th><th>Purchase price</th><th>Cloud (on-demand/hr)</th><th>70B FP8 tok/s</th><th>$/M tokens (est.)</th></tr></thead><tbody><tr><td>NVIDIA H100 SXM</td><td>$25-30K</td><td>$1.90-3.50</td><td>~50 (bs=1)</td><td>$0.55-0.80</td></tr><tr><td>NVIDIA H200 SXM</td><td>$30-40K</td><td>$3.50-5.00</td><td>~70 (bs=1)</td><td>$0.50-0.70</td></tr><tr><td>NVIDIA B200</td><td>$35-50K</td><td>$6.00+</td><td>~150 (bs=1)</td><td>$0.35-0.50</td></tr><tr><td>AMD MI300X</td><td>$22-28K</td><td>$0.95-2.50</td><td>~40 (bs=1)</td><td>$0.45-0.65</td></tr><tr><td>Intel Gaudi 3</td><td>$12-16K</td><td>$2.00-3.00</td><td>~35 (bs=1)</td><td>$0.55-0.75</td></tr></tbody></table>
+<p><em>Prices are approximate and vary by provider, contract terms, and availability. Token throughput estimates are for batch-size-1 single-GPU inference of a 70B model in FP8. Cost per million tokens depends heavily on batch size, utilization, and workload mix. Cloud pricing dropped significantly through 2025 as supply increased.</em></p>
+<p>The table reveals a pattern that price per token does not always favor the fastest GPU. The MI300X, despite lower raw throughput, achieves competitive cost per token because of its lower acquisition cost and superior memory capacity (which enables larger batches). Gaudi 3, at roughly half the H100’s purchase price, delivers reasonable throughput for organizations prioritizing total cost of ownership over peak performance. The B200 dominates on raw throughput but commands a premium and higher power consumption (1000W, often requiring liquid cooling).</p>
+<p>The right hardware choice depends on the workload profile. Latency-sensitive applications (real-time chat, code completion) favor the fastest per-request GPU regardless of cost. Throughput-oriented workloads (batch processing, offline analysis) favor cost-per-token, where AMD and Intel become competitive. Mixed workloads often land on the H200, which offers a balance of capacity, bandwidth, and ecosystem maturity.</p>
+<h2 id="what-comes-next">What comes next</h2>
+<p>The trajectory is clear. Memory bandwidth grows faster than compute, because the industry has recognized that inference workloads are bandwidth-starved. NVIDIA’s Vera Rubin (expected late 2026) will push to HBM4 with 13 TB/s of bandwidth per GPU. AMD’s MI355X (CDNA 4) targets 8 TB/s with 288 GB of HBM3E. Each generation narrows the gap between what compute units can consume and what the memory system can deliver.</p>
+<p>But hardware alone does not solve the problem. The engineers who build effective inference systems will be those who understand the interplay: how quantization decisions interact with Tensor Core precision support, how batch sizes interact with KV cache memory pressure, how attention mechanisms interact with SRAM capacity. The silicon is the constraint surface. The optimization happens at the boundary between hardware and software, where architectural knowledge translates directly into lower latency, higher throughput, and reduced cost.</p>
+<p>That boundary is where the interesting engineering lives.</p>   </div>  <div class="giscus-container" data-astro-cid-an2nl7ar> <div class="giscus" data-astro-cid-an2nl7ar></div> </div> <script>
+  (function () {
+    const theme = localStorage.getItem('theme') === 'dark' ? 'dark' : 'light';
+    const script = document.createElement('script');
+    script.src = 'https://giscus.app/client.js';
+    script.dataset.repo = 'lalitkale/lalitkale.github.io';
+    script.dataset.repoId = 'MDEwOlJlcG9zaXRvcnkyNDAxMDA3MDY=';
+    script.dataset.category = 'General';
+    script.dataset.categoryId = 'DIC_kwDODk-lYs4C3aPy';
+    script.dataset.mapping = 'pathname';
+    script.dataset.strict = '0';
+    script.dataset.reactionsEnabled = '1';
+    script.dataset.emitMetadata = '0';
+    script.dataset.inputPosition = 'top';
+    script.dataset.theme = theme;
+    script.dataset.lang = 'en';
+    script.crossOrigin = 'anonymous';
+    script.async = true;
+    document.querySelector('.giscus-container').appendChild(script);
+
+    // Keep giscus theme in sync when user toggles dark mode
+    const observer = new MutationObserver(() => {
+      const newTheme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+      const iframe = document.querySelector('iframe.giscus-frame');
+      if (iframe) {
+        iframe.contentWindow.postMessage(
+          { giscus: { setConfig: { theme: newTheme } } },
+          'https://giscus.app'
+        );
+      }
+    });
+    observer.observe(document.documentElement, { attributeFilter: ['class'] });
+  })();
+</script>  <div class="subscribe-section"> <script async src="https://eomail5.com/form/997a8128-1fda-11f1-99b0-65cf1c2bcffa.js" data-form="997a8128-1fda-11f1-99b0-65cf1c2bcffa"></script> </div> <script type="module">const c=document.querySelector(".subscribe-section");if(c){const s=new MutationObserver(()=>{const e=c.querySelector("h1");if(e){const t=document.createElement("p");t.className=e.className,t.textContent=e.textContent,e.replaceWith(t),s.disconnect()}});s.observe(c,{childList:!0,subtree:!0})}</script>  </article> <script type="module">const n=document.querySelectorAll('pre[data-language="mermaid"]');if(n.length>0){const m=document.documentElement.classList.contains("dark");import("https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs").then(s=>{const t=s.default;t.initialize({startOnLoad:!1,theme:m?"dark":"neutral",fontFamily:"Inter, -apple-system, sans-serif"});const i=new DOMParser;n.forEach((a,d)=>{const c=a.textContent??"",e=document.createElement("div");e.className="mermaid-diagram",a.replaceWith(e),t.render("mermaid-"+d,c).then(({svg:l})=>{const r=i.parseFromString(l,"text/html").querySelector("svg");r&&e.appendChild(r)})})})}</script>   </main> <footer class="footer" data-astro-cid-sz7xmlte> <p data-astro-cid-sz7xmlte>Built with <a href="https://astro.build" target="_blank" rel="noopener" data-astro-cid-sz7xmlte>Astro</a> &mdash; 2026-05-19 05:09 UTC</p> </footer>  </div> </body></html>
